@@ -1,0 +1,236 @@
+.container{
+	margin:auto;
+}
+.gallery {
+    overflow: hidden;
+    display: flex;
+}
+.list-img {
+    overflow-y: auto;
+    padding-left: 10px;
+    margin-left:60px;
+}
+.list-img img {
+    width: 145px;
+    height: 85px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+.main-img img {
+    width: 100%;
+    height: 545px;
+}
+.main-img-iframe{
+    width: 100%;
+    height: 400px;
+    margin-left:70px;
+    border-radius: 10px;
+}
+.comment-topic{
+    font-size:13px;
+    color:black;
+}
+.col-main {
+    position: relative;
+    width: 100%;
+}
+img.item-list {
+    opacity: 1;
+}
+.item-list.active {
+    opacity: 1;
+}
+.nutslide {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+span.next {
+    right: 15px;
+    position: absolute;
+    font-size: 28px;
+    color: #fff;
+    width: 35px;
+    height: 36px;
+    background: #373737;
+    padding-left: 8px;
+    padding-right: 10px;
+    border-radius: 4px;
+    padding-top: 1px;
+    cursor: pointer;
+}
+span.prev {
+    left: 15px;
+    position: absolute;
+    font-size: 28px;
+    color: #fff;
+    width: 35px;
+    height: 36px;
+    background: #373737;
+    padding-left: 8px;
+    padding-right: 10px;
+    border-radius: 4px;
+    padding-top: 1px;
+    cursor: pointer;
+}
+.main {
+    position: relative;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 55%;
+    flex: 0 0 55%;
+}
+.video-content {
+    position: relative;
+    display: flex;
+    padding-bottom: 20px;
+    cursor: pointer;
+}
+.video-content img {
+    position: absolute;
+}
+.video-content iframe {
+    width: 145px;
+    border-radius: 10px;
+    height: 85px;
+}
+.video-heading {
+    background-color: #215d0e;
+    padding: 5px;
+    border-radius: 10px;
+} 
+.video-heading h3 {
+    margin: 0;
+    padding: 0;
+} 
+.video-heading h3 a {
+    color: #ffc100;
+    text-decoration: none;
+} 
+.video-heading h3 a:hover {
+    text-decoration: underline;
+}  
+.box-text {
+    margin-left: 10px;
+    width: 500px;
+    padding: 10px;
+}
+.box-text p {
+    text-align: justify;
+    margin: 2px 0px;
+    color: #215f0ec7;
+    font-size:x-small;
+}
+.img-thumbnail {
+    overflow-y: scroll;
+    height: 520px;
+    overflow-x: hidden;
+    margin-left:10px;
+    margin-bottom:50px;
+    margin-right:0;
+}
+.agvideos {
+    padding: 5px;
+    background-color: #215d0e;
+    color: #ffc100;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-left:50px;
+    margin-right:50px;
+}
+.comments{
+    margin-left:70px;
+    margin-top:20px;
+    width:100%;
+}
+.comments h3{
+    background-color: #215d0e;
+    padding:5px 20px;
+    color:white;
+    border-radius: 10px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.comments form input{
+    width:100%;
+    border-bottom:1px solid gray;
+    outline: none;
+    border:none;
+}
+.form-div button{
+  float:right;
+  background-color:#215d0e;
+  padding:5px 10px;
+  color:white;
+  font-size:15px;
+  font-family: 'Times New Roman', Times, serif; 
+  border-radius: 10px;
+  height:30px;
+  margin-top:15px;
+}
+textarea{
+    height:30px;
+    width:100%;
+    outline:none;
+    border:none;
+    font-size:13px;
+}
+input{
+    width:100%;
+    outline:none;
+    border:none;
+    font-size:13px;
+    margin-bottom: 10px;
+}
+.form-div{
+    display: flex;
+    gap:150px;
+}
+.prev-comment h5{
+    font-family: 'Times New Roman', Times, serif;
+    font-size:13px;
+}
+.prev-comment{
+    border:1px solid gray;
+    height:80px;
+    overflow-y: scroll;
+    padding-left:10px;
+    padding-right:10px;
+    border-radius:10px;
+}
+.material-icons{
+    font-size:x-large;
+}
+@media only screen and (max-width: 768px) {
+    .blogmain {
+      flex-wrap: wrap;
+    }
+	.form-div button{
+		margin-left: -8rem;
+	}
+    .navc2 {
+      position: absolute;
+      background: white;
+      display: grid;
+      right: 0;
+      top: 100%;
+      padding: 16px 16%;
+      border-radius: 0px 0px 0px 10px;
+    }
+    .gallery {
+        display: grid;
+        gap: 10px;
+    }
+    .main-img iframe {
+        height: 200px;
+        margin:0;
+        padding:0;
+    }
+    .main{
+        flex: 100%;
+    }
+    .list-img{
+        margin-left:0;
+        padding-left: 0;
+    }
+}
+  

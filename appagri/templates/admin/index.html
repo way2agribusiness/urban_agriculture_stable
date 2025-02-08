@@ -1,0 +1,160 @@
+{% extends 'admin/index.html' %}
+{% load i18n %}
+{% load static %}
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_custom.css' %}">
+	<link rel="icon" href="https://res.cloudinary.com/dm71xhdxd/image/upload/v1696577306/Static%20Images/urban_agri_bjix3r_et3r0f.webp" type="image/x-icon">
+{% endblock %}
+{% block branding%}
+	<h1 id="site-name">{% trans 'UrbanAgriculture Admin Panel' %}</h1>
+{% endblock %}
+{% block content %}
+    <div id ="content-main">
+        {% for app in app_list %}
+            {% if app.app_label == 'appagri' %}
+                    <div class="app-{{app.app_label}} module">
+                        <table>
+                            <caption><a href="{{app.app_url}}" class="section" title="Models in the Appabi Admin Model">UA Models</a></caption>
+                            <tbody>
+                                <thead class="admin">
+                                    <th>Terrace Gardening Products Models</th>
+                                </thead>
+                                {% for model in app.models %}
+                                    {% if model.name == 'Enter Product Categories Data' or model.name == 'Enter Products Data' or model.name == "Get User's Product Reviews" or model.name == "Admin Response to User's Reviews" or model.name == 'Enter Flexi Kits Product details' or model.name == 'Get User Selected Kit Products' or  model.name == 'Enter_Main_category' or model.name == 'Enter_Sub_category' or model.name == 'Enter_Product data' or model.name == 'Enter Products SEO Contents---1' or model.name == 'Enter Flexi Kits Product details---1' or model.name == 'Get User Selected Kit Products---1' %}
+                                        <tr class="model-{{model.name}}">
+                                            <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                            <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                            <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                <thead class="admin">
+                                    <th>Agritech Mart Page Models</th>
+                                </thead>
+                                {% for model in app.models %}
+                                    {% if model.name == 'Enter ATM Introduction' or model.name == 'Enter ATM Supplier Info' or model.name == 'Get ATM Seller Enquiry & Feedback'  or model.name == 'Global Agritech & ATM: Enter Category Info' %}
+                                        <tr class="model-{{model.name}}">
+                                            <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                            <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                            <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}   
+                                <thead class="admin">
+                                    <th>SEO Contents</th>
+                                </thead>
+                                {% for model in app.models %}
+                                    {% if model.name == 'Enter SEO Content Page Wise' or  model.name == 'Enter Products SEO Contents' %}
+                                        <tr class="model-{{model.name}}">
+                                            <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                            <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                            <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %} 
+                                <thead class="admin">
+                                    <th>Contact Us Models</th>
+                                </thead>
+                                {% for model in app.models %}
+                                    {% if model.name == 'Get User Messages' %}
+                                        <tr class="model-{{model.name}}">
+                                            <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                            <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                            <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %} 
+                                <thead class="admin">
+                                    <th>Home Page Models</th>
+                                </thead>
+                                {% for model in app.models%}
+                                    {% if model.name == 'Upload Banner Images' or model.name == 'Enter Cross Promotion Content' or model.name == 'Enter Website Introduction' or model.name == "Home & About Us: Upload Collaboration Images" or model.name == 'Upload Featured Listing Images' or model.name == 'Upload Website Logo' or model.name == 'Contact Number' %}
+                                        <tr class="model-{{model.name}}">
+                                            <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                            <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                            <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                <thead class="admin">
+                                    <th>About Us Page Models</th>
+                                </thead>
+                                {% for model in app.models%}
+                                    {% if model.name == 'Upload Credential Images' %}
+                                        <tr class="model-{{model.name}}">
+                                            <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                            <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                            <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                <thead class="admin">
+                                    <th>Video Blogs Page Models</th>
+                                </thead>
+                                {% for model in app.models %}
+                                    {% if model.name == 'Post Blogs' or model.name == 'Get Comments for Blogs' %}
+                                        <tr class="model-{{model.name}}">
+                                            <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                            <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                            <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}  
+                            	<thead class="admin">
+                                    <th>K Center Page Models</th>
+                                </thead>
+                                {% for model in app.models%}
+                                    {% if model.name == 'Enter KCenter Category' or model.name == 'Enter KCenter Category-Specific Topic' %}
+                                        <tr class="model-{{model.name}}">
+                                            <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                            <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                            <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %} 
+                            </tbody>  
+                        </table>
+                    </div>
+            {% elif app.app_label == 'auth'%}
+                    <div class="app-{{app.app_label}} module">
+                        <table>
+                            <caption><a href="{{app.app_url}}" class="section" title="Models in the Auth Admin Model">Authentication & Authorization</a></caption>
+                            <tbody>
+                                {% for model in app.models%}
+                                    <tr class="model-{{model.name}}">
+                                        <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                        <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                        <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+    		{% elif app.app_label == 'sites'%}
+    			<div class="app-{{app.app_label}} module">
+                        <table>
+                            <caption><a href="{{app.app_url}}" class="section" title="Models in the Auth Admin Model">Sites</a></caption>
+                            <tbody>
+                                {% for model in app.models%}
+                                    <tr class="model-{{model.name}}">
+                                        <th scope="row"><a href="{{model.admin_url}}">{{model.name}}</a></th>
+                                        <td><a href="{{model.admin_url}}add/" class="addlink">Add</a></td>
+                                        <td><a href="{{model.admin_url}}" class="changelink">Change</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                 </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block sidebar %}
+    <div id="content-related">
+        <div class="module" id="recent-actions-module">
+            <h2 style="color:purple">{% translate 'Recent actions' %} </h2>
+            <h3 style="color:red">{% translate 'My actions' %}</h3>
+        </div>
+    </div>
+{% endblock %}

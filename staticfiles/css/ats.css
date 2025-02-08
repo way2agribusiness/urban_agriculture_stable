@@ -1,0 +1,384 @@
+.ats-intro{
+    width:95%;
+    margin:auto;
+}
+.ats-intro h2{
+    color: white;
+    display: inline-block;
+    font-family: math;
+    font-size: 1.2rem;
+    border-bottom: 3px solid #ffc100;
+    margin: auto;
+    border-radius: 5px 0;
+    padding: 0 60px;
+    background-image: linear-gradient(to left, rgb(1, 46, 1), green, rgb(1, 46, 1));
+    box-shadow: 0 5px 10px grey;
+    text-shadow: 3px 2px 2px black;
+}
+.message {
+    font-size: 0.8em;
+    font-family: math;
+    color: red;
+}
+.ats-intro p{
+    text-align:justify;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    line-height:2rem;
+    box-shadow:1px 1px 5px gray;
+    background-color:ghostwhite;
+    padding:1rem;
+    color:darkgreen;
+}
+.scale-img{
+	background-color:white;
+}
+.ats{
+    display:flex;
+    gap:0.5rem;
+    width:95%;
+    margin:auto;
+}
+.ats-div{
+    background-color:#ffc100;
+    flex-basis:25%;
+    border-radius:1rem;
+    background-image:linear-gradient(to left, #ffc100, wheat);
+    box-shadow:1px 1px 5px black;
+    padding: 1rem;
+    height: 1700px;
+}
+.ats-div #ats-category{
+    width: 100%;
+    height: 2rem;
+    border-radius: 0.2rem;
+    font-size: 1rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: white;
+    border: 2px solid darkgreen;
+    background-color: darkgreen;
+}
+.ats-div option{
+    background-color: whitesmoke;
+    color:black;
+}
+.main-ats{
+    flex-basis:80%;
+    overflow-y:auto;
+    height: 1700px;
+	scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+.main-ats1{
+	flex-basis:80%;
+    overflow-y:auto;
+    height: 1700px;
+	scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+.main-ats::-webkit-scrollbar {
+    display: none; 
+}
+.ats-category1{
+   	display: grid;
+    gap: 1rem;
+    grid-template-columns: 0.5fr 1fr;
+}
+.ats-category1 img{
+    margin:auto;
+    border-radius:0.5rem;
+    box-shadow:1px 1px 5px gray;
+	width: 100%;
+    aspect-ratio: 16 / 9;
+}
+.ats-category1 p{
+    text-align:justify;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size:1rem;
+    color:darkgreen;
+    line-height:2rem;
+	white-space: wrap;
+    word-break: break-all;
+}
+.category-h2{
+    color: white;
+    display: inline-block;
+    font-family: math;
+    font-size: 1rem;
+    border-bottom: 3px solid #ffc100;
+    margin: auto;
+    border-radius: 5px 0;
+    padding: 0 30px;
+    background-image: linear-gradient(to left, rgb(1, 46, 1), green, rgb(1, 46, 1));
+    box-shadow: 0 5px 10px grey;
+    text-shadow: 3px 2px 2px black;
+}
+.ats-card{
+    box-shadow:2px 2px 8px black;
+    padding:1rem;
+    border: 3px solid transparent;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to right, darkblue, aqua);
+}
+.ats-contact{
+    text-align:justify;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.ats-contact strong{
+    color:darkblue;
+}
+.cmpny-logo-links{
+    display:flex;
+    gap:1em;
+    align-items:center;
+}
+.cmpny-logo-links img{
+    width:8%;
+    cursor:zoom-in;
+}
+.cmpny-logo-links em{
+    font-size:0.8em;
+    cursor: pointer;
+}
+.cmpny-logo-links em a:hover{
+    color:darkgreen;
+    font-weight:bold;
+}
+.contact-details{
+    display:flex;
+    gap:2.5rem;
+    justify-content: center;
+    align-items:center;
+}
+.contact-details i{
+    font-size:x-large;
+    color:darkgreen;
+    font-weight:bold;
+}
+.ats-select{
+    width: 100%;
+    height: 2rem;
+    border-radius: 0.2rem;
+    font-size: 0.8rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: white;
+    border: 2px solid darkgreen;
+    background-color: darkgreen;
+}
+.ats-cnt{
+    display:grid;
+    grid-template-columns: 1fr 1fr; 
+    gap:1rem;
+}
+.full-product img{
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 5px;
+    box-shadow: 2px 2px 7px yellow;
+}
+.pro-name{
+    font-weight: bolder;
+    color: darkblue;
+    width: 50%;     
+}
+.desc{
+    text-align: justify; 
+    word-wrap:break-word;
+    font-size: 0.8rem;
+}
+.price{
+    text-align: center;
+    font-weight: bolder;
+    color: darkblue;  
+}
+.full-product{
+    box-shadow: 1px 1px 5px gray;
+    border-radius: 5px;
+    padding: 0.3rem;
+    background: linear-gradient(to bottom, darkgreen, lightseagreen);
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.name-price{
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    gap: 1rem;
+}
+.product-info{
+    box-shadow: 1px 1px 5px gray;
+    padding: 1rem;
+    background-image: linear-gradient(45deg, goldenrod, wheat);
+    border-radius: 10px 0 10px 0;
+    clip-path: polygon(0 0, 0 0, calc(100% - 20px) 0, 100% 15px, 100% 100%, 15px 100%, 0 100%);
+}
+.seller-product{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap:1rem;
+}
+.seller-form{
+    box-shadow: 1px 1px 5px gray;
+    background-color: whitesmoke;
+    padding: 1rem;
+    border-radius: 0 0 10px 10px;
+}
+.seller-form input, textarea{
+    width:86%;
+    border: 2px solid transparent;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to right, darkblue, aqua);
+    padding: 0.4rem;
+	vertical-align: text-top;
+}
+.seller-form label{
+    color: darkgreen;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.btn-div{
+    width:40%;
+    margin:auto
+}
+.seller-form button{
+    background-image: linear-gradient(45deg, steelblue, skyblue);
+    padding: 0.3rem 1rem;
+    color: black;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px black;
+    margin: 0.5em auto;
+}
+#id_seller_address{
+    height:50px;
+}
+#id_seller_plan{
+    height:100px;
+}
+.scale{
+    font-size: 1rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+    color: gold;
+    color: black;
+    background: linear-gradient(180deg, steelblue, skyblue);
+}
+.scale-btn{
+    display:none;
+}
+#add-plot-form{
+	font-size:0.7rem;
+	float:right;
+	margin-top:10px;
+}
+.product-image{
+    display:flex;
+    overflow-x:auto;
+    gap: 1.2em;
+    align-items:center;
+    margin-bottom:0.6em;
+}
+.product-image div {
+    display:flex;
+    flex:0 0  100%;
+    width:80%;
+    align-items: center;
+}
+.product-image div img{
+    width:90%;
+    aspect-ratio: 1 / 1;
+}
+.product-image div i{
+    color:white;
+    font-size:1em;
+    cursor: pointer;
+}
+.roadmap-img{
+	background-color:white;
+	width:100%
+}
+@media (max-width: 768px) {
+    .ats-category1{
+        display:block;	
+    }
+    .ats{
+        display:block;
+    }
+    .ats-div{
+        height:50%;
+        margin-bottom:1rem;
+      box-shadow:0 0 0 transparent;
+    }
+    .seller-product{
+        display:block;
+    }
+    .full-product{
+        margin-bottom:1rem;
+    }
+    .seller-form {
+        background: linear-gradient(45deg, lightgray, transparent);
+    	width: 95%;
+        margin: auto;
+    }
+    .scale{
+        padding: 0.5rem 0;
+    }
+    .seller-form label{
+        color:darkblue;
+    }
+    .scale-btn{
+        display: block;
+        font-size: 0.8rem;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        border-radius: 5px;
+        text-align: center;
+        color: darkblue;
+        background: goldenrod;
+        padding: 0.3rem 1rem;
+        position: relative;
+        width: 340px;
+        font-weight: bold;
+    	margin: auto;
+    }
+    .scale-btn i{
+        transform: rotateZ(90deg);
+        color: darkgreen;
+        animation: link 2s ease-in-out infinite;
+        position: absolute;
+    }
+    @keyframes link {
+        0% {
+            left: 0%;
+        }
+        100% {
+            left: 1%;
+        }
+    }
+	.cmpny-logo-links img {
+        width: 20%;
+        cursor:zoom-in;
+    }
+	.ats-intro h2{
+    	width: 95%;
+    	padding: 0 30px;
+    	margin: auto 0.5em;
+	}
+	.ats-intro p{
+    	width:95%;
+    	margin: 0.5em auto;
+    	background:transparent;
+    	box-shadow:0 0 0 white;
+    	padding:0;
+	}
+	.main-ats{
+    	height:550px;
+	}
+	.seller-form input, textarea{
+    	width:89%;
+	}
+	.main-ats1{
+		flex-basis:80%;
+		scrollbar-width: none; 
+    	-ms-overflow-style: none; 
+	}
+}

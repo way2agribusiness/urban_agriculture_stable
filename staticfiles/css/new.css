@@ -1,0 +1,149 @@
+
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1111111; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 8% auto; /* Centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.sec-list{
+    margin-left:10%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:15px; 
+    padding: 10px;
+}
+
+.kcenter-intro{
+    margin-left:50px;
+    text-align:justify;
+    font-size:15px;
+    width:1250px;
+}
+
+.open-popup{
+    text-align:center;
+    width:400px;
+}
+.list-text{
+    box-shadow:5px 5px 7px black;
+    padding:5px;
+    font-size:14px;
+    width:490px;
+    padding-left:10px;
+    border-radius:10px;
+    background-color: #076e07;
+    color:whitesmoke;
+}
+#popupTextTopic{
+    color:rgb(230, 166, 48);
+    font-weight: bold;
+    font-size:20px;
+    margin-bottom:5px;
+}
+#popupTextIntro{
+    font-size:14px;
+    margin-bottom: 5px;
+    text-align: justify;
+    font-family: Georgia, serif;
+}
+#popupTextConclude{
+    font-size:14px;
+    margin-bottom: 5px;
+    text-align: justify;
+    font-family: Georgia, serif;
+
+}
+.pop-div1{
+    display:flex;
+    justify-content:space-around;
+    padding:10px;
+    margin: 5px 0px 10px 0px;
+}
+.pop-scroll{
+    height:300px;
+    overflow-x: auto;
+    padding:25px;
+}
+#popupImage{
+    width:600px;
+    height:300px;
+    border-radius:5px;
+    box-shadow:5px 5px 10px black;
+}
+
+
+@media (max-width: 768px) {
+    .kcenter-intro{
+        font-size: 11px;
+        width: auto;
+        margin: 0px 15px 0px 15px;
+
+    }
+    #popupTextIntro{
+        font-size: 13px;
+
+    }
+    
+    .sec-list{
+        grid-template-columns: repeat(1, 1fr);
+        margin-left:8%;
+    }
+
+    .list-text{
+        width: 300px;
+        box-shadow:none;
+        font-size: 12px;
+    }
+    #popupTextTopic{
+        font-size: 15px;
+    }
+    #popupImage{
+        width: 210px;
+        height: 150px;
+        margin: 0px 0px 15px 14px;
+    }
+    #popupTextConclude{
+        font-size:13px;
+    }
+    .pop-div1{
+        flex-direction: column;
+    }
+    .pop-scroll{
+        padding:2px;
+        max-height:300px;
+
+    }
+    .hedding{
+        font-size:15px;
+    }
+
+}
+

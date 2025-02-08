@@ -1,0 +1,940 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/detailspg2.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/stylepg2.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/review.css' %}" />
+    <title>Urban Agriculture | {{ product.name }} | {{product.meta_title}}</title>
+    <script>
+        function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                showPosition, 
+                showError, 
+                { timeout: 10000, maximumAge: 60000 }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+    
+    function showPosition(position) {
+        const latitude = position.coords.latitude;    
+        const longitude = position.coords.longitude;
+    
+        // Fetch location details from Nominatim API
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`, {
+            headers: {
+                'Accept-Language': 'en'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const city = data.address.city || data.address.town || data.address.village;
+            const country = data.address.country;
+            const region = data.address.state;
+            const stateDistrict = data.address.state_district;
+            const district = data.address.county || data.address.district;
+            const county = data.address.county;
+            const postal_code = data.address.postcode;
+    
+            // Get CSRF token from the cookies
+            const csrftoken = getCookie('csrftoken');
+    
+            // Send the location details to the Django view
+            fetch('/get-location/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({
+                    latitude: latitude,
+                    longitude: longitude,
+                    city: city,
+                    country: country,
+                    region: region,
+                    stateDistrict: stateDistrict,
+                    district: district,
+                    county: county,
+                    postal_code: postal_code
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Location data updated successfully.");
+                } else {
+                    alert("Failed to get location data.");
+                }
+            });
+        });
+    }
+    
+    function showError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                alert("You denied the request for Geolocation. Please enable location services in your browser settings.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("Location information is unavailable. Make sure your device has location services enabled.");
+                break;
+            case error.TIMEOUT:
+                alert("The request to get user location timed out. Please try again.");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("An unknown error occurred.");
+                break;
+        }
+    }
+    
+    // Function to get CSRF token from the cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    window.onload = getLocation; // Automatically get location on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const main_category = document.getElementsByClassName('main_cat');
+      console.log('hello', main_category);
+      for (let i = 0; i < main_category.length; i++) {
+        main_category[i].addEventListener('click', function() {
+          const sub_cats = this.nextElementSibling;
+          if (sub_cats.style.display === 'none' || sub_cats.style.display == ''){
+            sub_cats.style.display = "block";
+          }else{
+            sub_cats.style.display = 'none';
+          }
+        });
+      }
+    });
+    </script>
+    <style>
+    .dic1{
+      display: none;
+      background-color: #215d0e;
+      color: white;
+      height:100px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin: 2px 2px 2px 10px;
+      margin-left: 10px;
+      border-left: 1px solid black;
+      border-radius: 0px 0px 6px 6px;
+      transition: 3s ease-in;
+    }
+    .main_cat {
+  	padding: 1px 8px;
+  	border: none;
+  	margin: 2px;
+  	background: rgb(229 243 229);
+  	font-size: 15px;
+  	border-radius: 5px;
+  	color: black;
+  	width: 95%;
+    font-family: emoji;
+    font-weight: bold;
+
+    }
+    .sub_cat{
+      font-size: 13px; 
+      margin:0px 5px 2px 5px;
+      padding: 2px;
+      padding-left: 7px;
+      font-family: emoji;
+    }
+    .sub_cat:hover{
+      background-color: rgb(110, 155, 110);
+      border-radius: 5px;
+    }
+    </style>
+
+{% endblock %}
+{% block content %}
+    <div class="pwrap">
+      <div class="psidebar" id="side_bar" style="background-color: rgb(202, 218, 200); border-radius:5px;z-index:9;cursor:pointer,top:70px ">
+          <h6>Terrace Gardening </h6> 
+        {% for i in main_category %}
+            <p class="main_cat" style="margin-left:10px;color:rgb(2, 27, 2);">{{i}}</p>
+            <div class="dic1">
+            {% for j in sub_products %}
+              {% if i.name == j.cat.name %}
+                  <a href="{% url 'appagri:product_page' j.name %}"><p class = "sub_cat">{{ j.name }}</p></a>
+              {% endif %}
+            {% endfor %}
+            </div>
+        {% endfor %}  
+      </div>
+  {% if page_t == 0 %}
+      <div class="hbody">
+        <div class="banner-container">
+          <div class="banner">
+          {% for i in banners %}
+          	<a href="{% if i.link %}{{i.link}}{% else %}#{% endif %}" target="_blank" rel="noopener"><img src="{{i.image.url}}" alt="{{i.alt}}" loading="lazy"></a>
+          {% endfor %}
+          </div>
+        </div>
+      	<br>
+      	<div class="hhighlight">  
+        	{% for i in highlight %}
+        		<div>
+          			<p>{{i.text1}}</p>
+          			<a href="{{i.link}}" target="_blank" rel="noopener">
+            			<img src="{{ i.image.url }}" alt="{{ i.alt }}" loading="lazy" class="web-image"/>
+          			</a>
+          			<a href="{{i.link}}" target="_blank" rel="noopener">
+            			<strong>{{ i.name }}</strong>
+          			</a>
+          			<section class="link-div"><i class="material-icons">pan_tool_alt</i><a href="{{i.link}}" class="web-link">{{i.link}}</a></section>
+        		</div>
+        	{% endfor %}
+     	</div>
+      {% for i in main_info %}
+      <div class="infomain">
+        <div class="infocontainerone">
+          <div style="display: flex; justify-content: center">
+            <img class="imgone" src="{{ i.imageone.url }}" alt="" />
+          </div>
+          <div style="display: flex; justify-content: center;gap:35px;margin-top:-70px">
+            <img class="imgtwo" src="{{ i.imagetwo.url }}" alt="" />
+            <img class="imgthree" src="{{ i.imagethree.url }}" alt="" />
+          </div>
+        </div>
+        <div class="infocontainertwo">
+          <h2 class="hhedding">
+            {{ i.hedding }}
+          </h2>
+          <p class="spinfo" style="margin-right: 6%" id="long-text">{{ i.information }}</p>
+          <p class="spinfo" style="margin-right: 6%" id="kannada_t">{{ i.Kannada_text }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      <br>
+      <h3 class="hedding">Terrace Gardening Product Categories</h3>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-md-6 col-sm-6 col-sm-offset-3">
+            <div class="main-wrappero">
+              <ul class="listOfassignmento">
+                {% for product in sub_products %}
+                <li>
+                  <div class="hpcard">
+                    <a href="{% url 'appagri:product_page' product.name %}">
+                      <div>
+                        <img src="{{ product.image.url }}" alt="{{ product.alt }}" />
+                      </div>
+                      <div class="spindivone">
+                        <strong>{{ product.name }}</strong>
+                        <p class="spviewmore" style="margin-left: 50px">View</p>
+                      </div>
+                    </a>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+              <div class="sld-btno text-centero">
+                <button class="btno btn-primaryo prvo" type="submit">
+                  Prev
+                </button>
+                <button
+                  class="btno btn-primaryo pull-righto nexto"
+                  type="submit"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <h3 class="hedding">Terrace Gardening Products</h3>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-md-6 col-sm-6 col-sm-offset-3">
+            <div class="main-wrapper">
+              <ul class="listOfassignment">
+                {% for sub_product in all_product %}
+                <li>
+                  <div class="spcard">
+                    <a href="{% url 'appagri:sub_product_details' sub_product.name|slugify sub_product.slug %}">
+                      <p class="spdiscout">-{{ sub_product.total }}% OFF</p>
+                      <img src="{{ sub_product.spimage.url }}" alt="" />
+                      <div class="spindivtwo">
+                        <h2>
+                          {% for i in max_stars %}
+                            {% if i < sub_product.rateing %}
+                              <i class="fas fa-star"></i>
+                            {% else %}
+                              <i class="far fa-star"></i>
+                            {% endif %}
+                          {% endfor %}
+                        </h5>
+                      </div>
+                      <div class="spindiv">
+                        <strong title="{{ sub_product.name }}">{{ sub_product.name }}</strong>
+                      </div>
+                      <div class="spindivone">
+                        <p>₹{{ sub_product.sales_price }}</p>
+                        <em>₹{{ sub_product.mrp }}</em>
+                      </div>
+                    </a>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+              <div class="sld-btn text-center">
+                <button class="btn btn-primary prv" type="submit">
+                  Prev
+                </button>
+                <button class="btn btn-primary pull-right next" type="submit">
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      {% for i in webinfo %}
+      <div class="webinfomain">
+        <div class="cardo">
+          <div class="card-img">
+            <img src="{{ i.image.url }}" alt="" />
+          </div>
+          <div class="card-info">
+            <strong class="nice">{{ i.English_hedding }}</strong>
+            <p class="text-body">{{ i.English_text }}</p>
+          </div>
+        </div>
+        <div class="cardo">
+          <div class="card-img">
+            <img src="{{ i.image.url }}" alt="" />
+          </div>
+          <div class="card-info">
+            <strong class="nice">{{ i.Kannada_hedding }}</strong>
+            <p class="text-body">{{ i.Kannada_text }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+	   {% if featured_data %}
+          <h2 class="hedding">Farmer's Choice</h2>
+          <div class="featured-list">
+            <div class="featured-container">
+              <div class="featured-div">
+                {% for feature in featured_data %}
+                  <img src="{{feature.featured_img}}" alt="{{feature.featured_alt}}" loading="lazy" class="photos"  onclick="displayFullImage('{{ feature.featured_img }}', '{{ feature.featured_alt }}')">
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+      {% endif %}
+      <br><br>
+      <h2 class="hedding">Download our Brouchers</h2>
+      <div id="wrapo">
+        <a href="https://res.cloudinary.com/dm71xhdxd/image/upload/v1696050438/Static%20Images/brochures/Way2Agritech_1_gsmqpx.pdf" class="btn-slide2">
+          <span class="circle2"><i class="fa fa-download"></i></span>
+          <span class="title2">Download</span>
+          <span class="title-hover2">Way2Agritech Brochure</span>
+        </a>
+        <a href="https://res.cloudinary.com/dm71xhdxd/image/upload/v1696050496/Static%20Images/brochures/Way2Foods_tntqcj.pdf" class="btn-slide2">
+          <span class="circle2"><i class="fa fa-download"></i></span>
+          <span class="title2">Download</span>
+          <span class="title-hover2">Way2Foods Brochure</span>
+        </a>
+        <a href="#" class="btn-slide2">
+          <span class="circle2"><i class="fa fa-download"></i></span>
+          <span class="title2">Download</span>
+          <span class="title-hover2">Way2ABI Brochure</span>
+        </a>
+      </div>
+      <br><br>
+      <h2 class="hedding">Collaboration</h2>
+      <article class="wrappero">
+        <div class="marquee">
+          <div class="marquee__group">
+            {% for i in brands %}
+            <img src="{{ i.image.url }}" alt="" />
+            {% endfor %}
+          </div>
+
+          <div class="marquee__group">
+            {% for i in brands %}
+            <img src="{{ i.image.url }}" alt="" />
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="marquee marquee--reverse">
+          <div class="marquee__group">
+            {% for i in brands %}
+            <img src="{{ i.image.url }}" alt="" />
+            {% endfor %}
+          </div>
+
+          <div aria-hidden="true" class="marquee__group">
+            {% for i in brands %}
+            <img src="{{ i.image.url }}" alt="" />
+            {% endfor %}
+          </div>
+        </div>
+      </article>
+		{% load custom_filters %}
+  		{% if imp_reviews %}
+  			<div class="reviews">
+    			<center><h3 class="hedding">Rating & Reviews</h3></center>
+    			<br>
+    			<div class="rating">
+      				<div class="review-stat">
+        				<div class="review-stat-inside">
+          					<h1>{{avg_rating}}/5</h1>
+          					<h1>
+            					{% for _ in avg_rating|get_star_icons %}
+              						<i class="material-icons">star</i>
+            					{% endfor %}
+          					</h1>
+        				</div>
+        				{% if total_review %}<p>Reviewed by {{total_review}} {% if total_review == 1 %}user{% else %}users {% endif%}</p>{% endif %}
+        				<input type="hidden" value="{{per5}}" id="per4">
+        				<input type="hidden" value="{{per4}}" id="per3">
+        				<input type="hidden" value="{{per3}}" id="per2">
+        				<input type="hidden" value="{{per2}}" id="per1">
+        				<input type="hidden" value="{{per1}}" id="per0">
+      				</div>
+      				<div class="review-bar-div">
+        				<div class="review-bar">
+          					<p>5<i class="material-icons">star</i></p>
+          					<div class="rate-bar">
+            					<div id="filledDiv"><span id="4-span"></span></div>
+            					<p>{{per5}}%</p>
+          					</div>
+        				</div>
+        				<div class="review-bar">
+          					<p>4<i class="material-icons">star</i></p>
+          					<div class="rate-bar">
+            					<div id="filledDiv"><span id="3-span"></span></div>
+            					<p>{{per4}}%</p>
+          						</div>
+        					</div>
+        				<div class="review-bar">
+          					<p>3<i class="material-icons">star</i></p>
+          					<div class="rate-bar">
+            					<div id="filledDiv"><span id="2-span"></span></div>
+            					<p>{{per3}}%</p>
+          					</div>
+        				</div>
+        				<div class="review-bar">
+          					<p>2<i class="material-icons">star</i></p>
+          					<div class="rate-bar">
+            					<div id="filledDiv"><span id="1-span"></span></div>
+            					<p>{{per2}}%</p>
+          					</div>
+        				</div>
+        				<div class="review-bar">
+          					<p>1<i class="material-icons">star</i></p>
+          					<div class="rate-bar">
+           	 					<div id="filledDiv"><span id="0-span"></span></div>
+            					<p>{{per1}%}</p>
+          					</div>
+        				</div>
+      				</div>
+    			</div>
+    			<br>
+    			<div>
+      				<h4>Most Relevant Reviews</h4>
+      				<br>
+      				<div class="user-review">
+        				{% for review in imp_reviews %}
+          					<div>
+            					<span class="name-letter">{{review.name |first_letter}}</span>
+          					</div>
+          					<div style="display:block">
+            					{% for _ in review.rating|get_star_icons %}
+              						<i class="material-icons">star</i>
+            					{% endfor %}<br>
+            					<p style="font-size:0.9em; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">{{review.product}}</p><br>
+            					{% if review.review %}<p style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"><strong>Review:</strong> {{review.review}}</p>{% endif %}
+          					</div>
+          					<div>
+            					<span class="date">{{review.date}}</span>
+          					</div>
+                    	<br><hr><br>
+        				{% endfor %}
+      				</div>
+    			</div>
+  			</div>
+  		{% endif %}
+    </div>
+  </div>
+    <script>
+    	if (window.innerWidth <= 768) {
+      			const introDivs = document.querySelectorAll('#long-text');
+      			introDivs.forEach(introDiv => {
+        			const actualContent = introDiv.textContent.trim();
+        			const wordsArray = actualContent.split(/\s+/);
+        			const displayWords = wordsArray.slice(0, 40).join(' ') + ' . . .';
+        			const actualHeight = window.getComputedStyle(introDiv).height;
+        			const trimmedHeight = '200px';
+        			introDiv.style.overflowY = 'hidden';
+        			introDiv.style.height = trimmedHeight;
+        			introDiv.textContent = displayWords;
+        			const readMore = document.createElement('strong');
+        			readMore.innerHTML = 'Read More >>';
+        			readMore.style.color = 'darkblue';
+        			readMore.style.textDecoration = 'underline';
+        			introDiv.appendChild(readMore);
+        			readMore.addEventListener('click', function () {
+          			if (readMore.innerHTML.substr(0,readMore.innerHTML.length-9) === 'Read More') {
+            			introDiv.textContent = actualContent+' '+' . . .'+' '+ ' ';
+            			introDiv.style.height = actualHeight;
+            			readMore.innerHTML = 'Read Less <<';
+          			} else {
+            			introDiv.textContent = displayWords;
+            			introDiv.style.height = trimmedHeight;
+            			readMore.innerHTML = 'Read More >>';
+          			}
+          			introDiv.appendChild(readMore); 
+        		});
+      		});
+        }
+    	const banner = document.querySelector('.banner');
+      	let imgIndex = 0;
+      	function slideBanner() {
+        	imgIndex = (imgIndex + 1) % banner.children.length;
+        	const imgWidth = banner.children[0].offsetWidth; 
+        	const imgMarginRight = parseFloat(window.getComputedStyle(banner.children[0]).marginRight);
+        	const imgMarginLeft = parseFloat(window.getComputedStyle(banner.children[0]).marginLeft);
+        	const translateX = -(imgIndex * (imgWidth + imgMarginRight + imgMarginLeft)); 
+        	banner.style.transform = `translateX(${translateX}px)`; 
+      	}
+      	setInterval(slideBanner, 5000);
+    
+    	const filledDivs = document.querySelectorAll('#filledDiv');
+  		filledDivs.forEach((filledDiv, index) => {
+    		const percentage = document.getElementById(`per${index}`).value; 
+    		const spanDiv = document.getElementById(`${index}-span`);
+    		const coloredWidth = percentage + '%';
+    		spanDiv.style.width = coloredWidth;
+    		spanDiv.style.backgroundColor = 'green';
+  		});
+      $(window).on('load', function () {
+        var NoLi = $('.listOfassignment li').length;
+        console.log(NoLi);
+        no = 0;
+
+        showNoLi = 4;
+
+        if ($(window).width() <= 750) {
+          showNoLi = 2;
+        }
+
+        if ($(window).width() <= 450) {
+          showNoLi = 1;
+        }
+
+        start = 0;
+
+        end = showNoLi;
+
+        var deviedLi = NoLi / showNoLi;
+
+        var arounVal = Math.ceil(deviedLi);
+
+        var counter;
+
+        for (counter = 1; counter <= arounVal; counter++) {
+          $('<li><a href="javascript:void(0)"></a></li>').appendTo(
+            '.pagenation'
+          );
+        }
+
+        $('.pagenation li').eq(0).addClass('active');
+
+        $('.listOfassignment li').slice(start, end).addClass('active');
+
+        $('.prv').prop('disabled', true);
+
+        function myfunction(selectedShow) {
+          return function () {
+            if (selectedShow === 'nextShow') {
+              no++;
+
+              $('.pagenation li').removeClass('active');
+
+              $('.pagenation li').eq(no).addClass('active');
+
+              $('.listOfassignment li').removeClass('active');
+
+              start = showNoLi * no;
+
+              end = showNoLi * no + showNoLi;
+
+              $('.listOfassignment li').slice(start, end).addClass('active');
+
+              $('.prv').prop('disabled', false);
+
+              if (no * showNoLi + showNoLi >= NoLi) {
+                $('.next').prop('disabled', true);
+              }
+            }
+            if (selectedShow === 'pinterclick') {
+              $('.pagenation li').removeClass('active');
+
+              var thisnumber = $(this).addClass('active').index();
+
+              no = thisnumber;
+
+              start = showNoLi * no;
+
+              end = showNoLi * no + showNoLi;
+
+              $('.listOfassignment li').removeClass('active');
+
+              $('.listOfassignment li').slice(start, end).addClass('active');
+
+              if (no > 0) {
+                $('.prv').prop('disabled', false);
+              } else {
+                $('.prv').prop('disabled', true);
+              }
+
+              if (no * showNoLi + showNoLi >= NoLi) {
+                $('.next').prop('disabled', true);
+              } else {
+                $('.next').prop('disabled', false);
+              }
+            } else if (selectedShow === 'prevSelecte') {
+              no--;
+
+              $('.pagenation li').removeClass('active');
+
+              $('.pagenation li').eq(no).addClass('active');
+
+              $('.listOfassignment li').removeClass('active');
+
+              start = showNoLi * no;
+
+              end = showNoLi * no + showNoLi;
+
+              $('.listOfassignment li').slice(start, end).addClass('active');
+
+              $('.next').prop('disabled', false);
+
+              if (no === 0) {
+                $('.prv').prop('disabled', true);
+              }
+            }
+          };
+        }
+
+        $('.next').on('click', myfunction('nextShow'));
+
+        $('.prv').on('click', myfunction('prevSelecte'));
+
+        $('.pagenation').on('click', 'li', myfunction('pinterclick'));
+      });
+      
+
+      $(window).on('load', function () {
+        var NoLio = $('.listOfassignmento li').length;
+        console.log(NoLio);
+        no = 0;
+
+        showNoLio = 4;
+
+        if ($(window).width() <= 750) {
+          showNoLio = 2;
+        }
+
+        if ($(window).width() <= 450) {
+          showNoLio = 1;
+        }
+
+        starto = 0;
+
+        endo = showNoLio;
+
+        var deviedLio = NoLio / showNoLio;
+
+        var arounValo = Math.ceil(deviedLio);
+
+        var countero;
+
+        for (countero = 1; countero <= arounValo; countero++) {
+          $('<li><a href="javascript:void(0)"></a></li>').appendTo(
+            '.pagenationo'
+          );
+        }
+
+        $('.pagenationo li').eq(0).addClass('activeo');
+
+        $('.listOfassignmento li').slice(starto, endo).addClass('activeo');
+
+        $('.prvo').prop('disabled', true);
+
+        function myfunction(selectedShowo) {
+          return function () {
+            if (selectedShowo === 'nextShowo') {
+              no++;
+
+              $('.pagenationo li').removeClass('activeo');
+
+              $('.pagenationo li').eq(no).addClass('activeo');
+
+              $('.listOfassignmento li').removeClass('activeo');
+
+              starto = showNoLio * no;
+
+              endo = showNoLio * no + showNoLio;
+
+              $('.listOfassignmento li')
+                .slice(starto, endo)
+                .addClass('activeo');
+
+              $('.prvo').prop('disabled', false);
+
+              if (no * showNoLio + showNoLio >= NoLio) {
+                $('.nexto').prop('disabled', true);
+              }
+            }
+            if (selectedShowo === 'pinterclicko') {
+              $('.pagenationo li').removeClass('activeo');
+
+              var thisnumbero = $(this).addClass('activeo').index();
+
+              no = thisnumbero;
+
+              starto = showNoLio * no;
+
+              endo = showNoLio * no + showNoLio;
+
+              $('.listOfassignmento li').removeClass('activeo');
+
+              $('.listOfassignmento li')
+                .slice(starto, endo)
+                .addClass('activeo');
+
+              if (no > 0) {
+                $('.prvo').prop('disabled', false);
+              } else {
+                $('.prvo').prop('disabled', true);
+              }
+
+              if (no * showNoLio + showNoLio >= NoLio) {
+                $('.nexto').prop('disabled', true);
+              } else {
+                $('.nexto').prop('disabled', false);
+              }
+            } else if (selectedShowo === 'prevSelecteo') {
+              no--;
+
+              $('.pagenationo li').removeClass('activeo');
+
+              $('.pagenationo li').eq(no).addClass('activeo');
+
+              $('.listOfassignmento li').removeClass('activeo');
+
+              starto = showNoLio * no;
+
+              endo = showNoLio * no + showNoLio;
+
+              $('.listOfassignmento li')
+                .slice(starto, endo)
+                .addClass('activeo');
+
+              $('.nexto').prop('disabled', false);
+
+              if (no === 0) {
+                $('.prvo').prop('disabled', true);
+              }
+            }
+          };
+        }
+
+        $('.nexto').on('click', myfunction('nextShowo'));
+
+        $('.prvo').on('click', myfunction('prevSelecteo'));
+
+        $('.pagenationo').on('click', 'li', myfunction('pinterclicko'));
+      });
+    
+    /*  this is the JS code for English & Kannada Text  Start    */
+      function detectKannada(text){
+        const regex = /^[a-zA-Z]+$/;
+        return regex.test(text);
+        
+      }
+      let engWords = '';
+      const container = document.querySelector('#kannada_t');
+      container.style.fontSize = '12px';
+      for (let i=0;i<container.innerHTML.length; i++){
+        if(detectKannada(container.innerHTML[i])){
+          engWords += `<span>${container.innerHTML[i]}</span>`;
+        }else{
+          engWords += container.innerHTML[i];
+        }
+      }
+      container.innerHTML = engWords;
+      for (let i=0; i<container.children.length;i++){
+       container.children[i].style.fontSize = '16px';
+       container.children[i].style.fontWeight = "bold"; 
+      }
+    </script>
+  {% else %}
+  <div class="inbody">
+    <div class="exclusive-listing">
+      <div class="exclusive" style="background-image:url('{{spec_cat.background_gif}}')">
+        {% if spec_cat %}
+          <div class="excl-div">
+            <div class="excl">Exclusive Listing</div>
+            <span onclick="displayFullImage('{{ spec_cat.exclusive_img.url }}', '{{ spec_cat.exclusive_img_alt }}')" class="content-excl">
+              <i class="material-icons" id="hand">double_arrow</i>
+              <strong style="font-size:0.8em">{{spec_cat}}</strong> - {% if spec_cat.exclusive_highlight_text %}<p style="font-size:0.8em">{{spec_cat.exclusive_highlight_text}}</p>{% endif %}
+            </span>
+            <img class="new" src="https://res.cloudinary.com/dm71xhdxd/image/upload/v1716368739/Static%20Images/123798875-color-comic-speech-bubble-and-cool-on-transparent-background-text-new-vector-illustration-and-removebg-preview_jwoaq6.png">
+          </div>
+        {% endif %}
+      </div>
+      <div class="tproduct">
+        <div class="url">
+          <a href="/terrace-gardening-products">Terrace Gardening Product Categories</a>
+          <button onclick="goBack()" id="backbtn">Back</button>
+        </div> 
+      </div>
+    </div>
+    <h3 class="hedding">{{spec_cat.name}}</h3>
+    <div class="containerone large-5 column">
+      <div class="prod-img">
+        <img src="{{ spec_cat.image.url }}" alt="{{spec_cat.image.name}}" loading="lazy"/>
+        <div class="phighlights">
+          <div class="hone">
+            <img
+              style="width: 110px;height:110px;"
+              src="{{ spec_cat.Highlight_image1.url }}"
+              alt="{{spec_cat.Hightlight_image1.name}}" loading="lazy"
+            />
+          </div>
+          <div class="hone">
+            <img
+              style="width: 110px;height:110px;"
+              src="{{ spec_cat.Highlight_image2.url }}"
+              alt="{{spec_cat.Highlight_image2.name}}" loading="lazy"
+            />
+          </div>
+          <div class="hone">
+            <img
+              style="width: 110px;height:110px;"
+              src="{{ spec_cat.Highlight_image3.url }}"
+              alt="{{spec_cat.Hightlight_image3.name}}" loading="lazy"
+            />
+          </div>
+        </div>
+        <div class="phighlights">
+          <div class="hone">
+            <strong class="htext">{{ spec_cat.text1 }}</strong>
+          </div>
+          <div class="hone">
+            <strong class="htext">{{ spec_cat.text2 }}</strong>
+          </div>
+          <div class="hone">
+            <strong class="htext">{{ spec_cat.text3 }}</strong>
+          </div>
+        </div>
+      </div>
+      <div class="pcontent">
+        <div class="spinfo-div">
+          <p class="spinfo" id="long-text">{{ spec_cat.pinfo }}</p>
+        </div>
+      </div>
+    </div>
+    <br>
+    {% if sub_products %}
+    <h3 class="hedding">Related {{spec_cat.name}} Products</h3>
+    <div class="subpcard">
+      {% for sub_product in pro_info %}
+      <div>
+        <h2 style="position: absolute;background-color: rgb(50, 0, 167);padding: 2px 5px; border-radius: 10px;color: #fff;font-size: 12px;">Sales Price: ₹. {{ sub_product.sales_price }}</h2>
+        <a
+          href="{% url 'appagri:sub_product_details' sub_product.product|slugify sub_product.slug %}">
+        >
+          <img src="{{ sub_product.spimage.url }}" alt="" />
+          <h3>{{ sub_product.name }}</h3>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+<div class="overlay">
+  <div class="full-image-container">
+    <i class="material-icons" onclick="closeFullImage()">close</i>
+    <img src="" alt="Full Image" class="full-image">
+  </div>
+</div>
+<script>
+  if (window.innerWidth <= 768) {
+        const introDivs = document.querySelectorAll('#long-text');
+        introDivs.forEach(introDiv => {
+          const actualContent = introDiv.textContent.trim();
+          const wordsArray = actualContent.split(/\s+/);
+          const displayWords = wordsArray.slice(0, 40).join(' ') + ' . . .';
+          const actualHeight = window.getComputedStyle(introDiv).height;
+          const trimmedHeight = '230px';
+          introDiv.style.overflowY = 'hidden';
+          introDiv.style.height = trimmedHeight;
+          introDiv.textContent = displayWords;
+          const readMore = document.createElement('a');
+          readMore.innerHTML = 'Read More >>';
+          readMore.style.color = 'darkblue';
+          readMore.style.textDecoration = 'underline';
+          introDiv.appendChild(readMore);
+          readMore.addEventListener('click', function () {
+            if (readMore.innerHTML.substr(0,readMore.innerHTML.length-9) === 'Read More') {
+              introDiv.textContent = actualContent+' '+' . . .'+' '+ ' ';
+              introDiv.style.height = actualHeight;
+              readMore.innerHTML = 'Read Less <<';
+            } else {
+              introDiv.textContent = displayWords;
+              introDiv.style.height = trimmedHeight;
+              readMore.innerHTML = 'Read More >>';
+            }
+            introDiv.appendChild(readMore);
+        });
+      });
+  }
+  const overlay = document.querySelector('.overlay');
+  const fullImageContainer = document.querySelector('.full-image-container');
+  function displayFullImage(imgSrc, imgTitle) {
+      const fullImage = document.querySelector('.full-image');
+      fullImage.src = imgSrc;
+      fullImage.alt = imgTitle;
+      overlay.style.display = 'block';
+      fullImageContainer.style.display = 'block';
+  }
+  function closeFullImage(){
+      overlay.style.display = 'none';
+      fullImageContainer.style.display = 'none';
+  }
+  if(window.innerWidth <= 768){
+      const targetDiv =  document.querySelector('.tproduct');
+      const movingDiv = document.querySelector('.exclusive');
+      targetDiv.insertAdjacentElement('afterend',movingDiv);
+  }
+ </script>
+
+{% endif %}
+    
+{% endblock %}

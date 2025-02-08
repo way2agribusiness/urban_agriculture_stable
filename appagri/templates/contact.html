@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/contactspg.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/aboutuspg1.css' %}" />
+    <title>Urban Agriculture | Contact Us | {{title}}</title>
+{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+  	<br>
+  	<div class="contact">
+      <div class="hhighlight">
+        {% for i in highlight %}
+        <div>
+          <p>{{i.text1}}</p>
+          <a href="{{i.link}}" target="_blank" rel="noopener">
+            <img src="{{ i.image.url }}" alt="{{ i.alt }}" loading="lazy" class="web-image"/>
+          </a>
+          <a href="{{i.link}}" target="_blank" rel="noopener">
+            <strong>{{ i.name }}</strong>
+          </a>
+          <section class="link-div"><i class="material-icons">pan_tool_alt</i><a href="{{i.link}}" class="web-link">{{i.link}}</a></section>
+        </div><br>
+        {% endfor %}
+      </div>
+      <div class="cnt">
+        <div class="contact-form-div">
+          <div class="contact-form">
+            <form method="post" >
+          		{% csrf_token %}
+          		<h2>Write Us</h2>
+          		{% if message %}<p class="errorlist">{{message}}</p>{% endif %}
+          		{% for field in form %}
+              		<label>{{field.label}}</label>
+              		{{field}}
+          		{% endfor %}<br>
+          		<button type="submit" value="Submit">Send Message</button>
+        	</form>
+          </div>
+        </div>
+        <div class="contact-info">
+        <h2>Contact us</h2>
+        <div class="contact-info-div">
+          <div class="icons">
+            <i class="material-icons">place</i>
+            <address>
+              <a href="https://www.google.com/maps/place/Way2Agribusiness+India+Pvt+Ltd/@13.0159611,77.542835,17z/data=!3m1!4b1!4m6!3m5!1s0x3bae234a43de2765:0x4dc2c8416831cc0!8m2!3d13.0159559!4d77.5454099!16s%2Fg%2F11b6llkwn7?entry=ttu" style="color:black;">
+              ಕೃಷಿ ಮಿತ್ರ/ Krushi Mithra # 636, BDA Block 2, APMC (RMC) Yard, Yeshwanthpura, Bengaluru - 560022
+              </a>
+            </address>
+          </div>
+          <div class="icons1">
+            <i class="material-icons">phone</i>
+            <p class="chat">
+              <a href="https://api.whatsapp.com/send?phone=919449004956">
+                <i class="fa fa-whatsapp"></i>
+              </a>
+              <a href="+91 9449004956" style="color:black;">9449004956</a>
+            </p>
+            <p><a href="+91 8277078435" style="color:black;">8277078435</a> / <a href="+91 8095000388" style="color:black;">8095000388</a> / <a href="080 24484173" style="color:black;">080 24484173</a></p>
+          </div>
+          <div class="icons2">
+            <i class="material-icons">mail</i>
+            <p><a href="mailto:way2agritech@way2agribusiness.com" style="color:black;">way2agritech@way2agribusiness.com</a></p>
+            <p><a href="mailto:way2agritech@way2agribusiness.com" style="color:black;">agriclinic@way2agribusiness.com</a></p>
+            <p><a href="mailto:way2agritech@way2agribusiness.com" style="color:black;">way2agritech@gmail.com</a></p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  	<br>
+  <script>
+    function limitNumberDigits(event, maxLength, minLength) {
+      const input = event.target;
+
+      if (input.validity.valid && input.value.length > maxLength) {
+        input.value = input.value.slice(0, maxLength);
+      } 
+      else if (input.value.length < minLength){
+        const errorElement = document.getElementById('phone-error');
+        errorElement.textContent = `Phone number must be at least ${minLength} digits.`;
+      }
+      else {
+        const errorElement = document.getElementById('phone-error');
+        if (input.value[0] != '9' && input.value[0] != '8' && input.value[0] != '7' && input.value[0] != '6'){
+          errorElement.textContent = `Phone number must be start with 9 or 8 or 7 or 6`;
+        }
+        else{
+          errorElement.textContent = '';
+        }
+      }
+    }
+  </script>
+{% endblock %}

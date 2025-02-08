@@ -1,0 +1,63 @@
+{% extends "admin/change_list.html" %}
+{% load i18n%}
+{% load static %}
+{% block extrastyle %}
+    {{ block.super }}
+	<link rel="icon" href="https://res.cloudinary.com/dm71xhdxd/image/upload/v1696577306/Static%20Images/urban_agri_bjix3r_et3r0f.webp" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_custom.css' %}">
+    <script>
+        window.onload = function() {
+            let h1Elements = document.getElementsByTagName("h1");
+            let addLink = document.getElementsByClassName('object-tools')[0].getElementsByTagName('li')[0].getElementsByClassName('addlink');
+            let navSidebar = document.getElementById('nav-sidebar').getElementsByClassName('app-appagri module current-app')[0].getElementsByTagName('table')[0].getElementsByTagName('tbody')[0];
+            let thElement = document.createElement('th');
+        	let thElement1 = document.createElement('th');
+            let thElement2 = document.createElement('th');
+            thElement.textContent = 'Admin Models';
+            thElement1.textContent = 'Terrace Gardening Product Models';
+        	thElement2.textContent = 'User Response Models';
+        
+            thElement.style.backgroundColor = "darkgreen";
+            thElement.style.color = "white";
+            thElement.style.fontFamily = "Cambria, Cochin, Georgia, Times, 'Times New Roman', serif";
+            thElement.style.borderRadius = "5px";
+            thElement.style.paddingBlock = "0";
+            thElement.style.padding = "5px";
+        
+        	thElement1.style.backgroundColor = "darkgreen";
+            thElement1.style.color = "white";
+            thElement1.style.fontFamily = "Cambria, Cochin, Georgia, Times, 'Times New Roman', serif";
+            thElement1.style.borderRadius = "5px";
+            thElement1.style.paddingBlock = "0";
+            thElement1.style.padding = "5px";
+            
+            thElement2.style.backgroundColor = "darkgreen";
+            thElement2.style.color = "white";
+            thElement2.style.fontFamily = "Cambria, Cochin, Georgia, Times, 'Times New Roman', serif";
+            thElement2.style.borderRadius = "5px";
+            thElement2.style.paddingBlock = "0";
+            thElement2.style.padding = "5px";
+        
+            navSidebar.insertBefore(thElement, navSidebar.firstChild);
+        
+            let modelProductElement = navSidebar.getElementsByClassName('model-product')[0];
+            modelProductElement.parentNode.insertBefore(thElement1, modelProductElement);
+        
+        	let modelUserElement = navSidebar.getElementsByClassName('model-comments')[0];
+        	modelUserElement.parentNode.insertBefore(thElement2, modelUserElement);
+        
+            for (let i = 0; i < h1Elements.length; i++) {
+                h1Elements[i].textContent = "Select Listed Product SEO Contents to Change";
+            } 
+        	for (let j = 0; j < addLink.length; j++){
+                addLink[j].textContent = "Add Product SEO Contents";
+            }
+        };
+    </script>
+{% endblock %}
+{% block sidebar %}
+    {{block.super}}
+{% endblock %}
+{% block content %}
+    {{block.super}}
+{% endblock %}

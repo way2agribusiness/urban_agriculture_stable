@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/detailspg2.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/stylepg2.css' %}" />
+    <title>Urban Agriculture | {{ product.name }} | {{product.meta_title}}</title>
+{% endblock %}
+{% block content %}
+    <div class="pwrap">
+      <div class="psidebar" id="side_bar">
+        {% for category in categories %}
+          <h6>{{category}}</h6>
+          <div class="scroll">
+            {% for product in products %}
+              {% if category == product.category %}
+                <li>
+                  <div class="sub-products">
+                    <div class="dropdown">
+                      {% if product_slug == product.slug %}
+                        <div class="dropbtn">
+                          <p class="prashadrop">{{ product.name }}</p>
+                        </div>
+                      {% else %}
+                        <a href="{% url 'appagri:product_details' product.slug %}">
+                          <div class="dropbtn">
+                            <p class="prashadrop">{{ product.name }}</p>
+                          </div>
+                        </a>
+                      {% endif %}
+                      {% if product_slug == product.slug %}
+                        <div class="dropdown-content">
+                          {% for sub_product in product.subproduct_set.all %}
+                            <a href="{% url 'appagri:sub_product_details' sub_product.product|slugify sub_product.slug %}">
+                              <p title="{{sub_product.name }}">{{ sub_product.name }}</p>
+                            </a>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="inbody">
+        <div class="exclusive-listing">
+          <div class="exclusive" style="background-image:url('{{product.background_gif}}')">
+            {% if product %}
+              <div class="excl-div">
+                <div class="excl">Exclusive Listing</div>
+                <span onclick="displayFullImage('{{ products.exclusive_img.url }}', '{{ product.exclusive_img_alt }}')" class="content-excl">
+                  <i class="material-icons" id="hand">double_arrow</i>
+                  <strong style="font-size:0.8em">{{product}}</strong> - {% if product.exclusive_highlight_text %}<p style="font-size:0.8em">{{products.exclusive_highlight_text}}</p>{% endif %}
+                </span>
+                <img class="new" src="https://res.cloudinary.com/dm71xhdxd/image/upload/v1716368739/Static%20Images/123798875-color-comic-speech-bubble-and-cool-on-transparent-background-text-new-vector-illustration-and-removebg-preview_jwoaq6.png">
+              </div>
+            {% endif %}
+          </div>
+          <div class="tproduct">
+            <div class="url">
+              <a href="/terrace-gardening-products">Terrace Gardening Product Categorieswww</a>
+              <button onclick="goBack()" id="backbtn">Back</button>
+            </div> 
+          </div>
+        </div>
+        <h3 class="hedding">{{product.name}}</h3>
+        <div class="containerone large-5 column">
+          <div class="prod-img">
+            <img src="{{ product.image.url }}" alt="{{product.image.name}}" loading="lazy"/>
+            <div class="phighlights">
+              <div class="hone">
+                <img
+                  style="width: 110px;height: 110px;"
+                  src="{{ product.Highlight_image1.url }}"
+                  alt="{{product.Hightlight_image1.name}}" loading="lazy"
+                />
+              </div>
+              <div class="hone">
+                <img
+                  style="width: 110px;height:110px;"
+                  src="{{ product.Highlight_image2.url }}"
+                  alt="{{product.Highlight_image2.name}}" loading="lazy"
+                />
+              </div>
+              <div class="hone">
+                <img
+                  style="width: 110px;height:110px;"
+                  src="{{ product.Highlight_image3.url }}"
+                  alt="{{product.Hightlight_image3.name}}" loading="lazy"
+                />
+              </div>
+            </div>
+          	<div class="phighlights">
+              <div class="hone">
+                <strong class="htext">{{ product.text1 }}</strong>
+              </div>
+              <div class="hone">
+                <strong class="htext">{{ product.text2 }}</strong>
+              </div>
+              <div class="hone">
+                <strong class="htext">{{ product.text3 }}</strong>
+              </div>
+            </div>
+          </div>
+          <div class="pcontent">
+            <div class="spinfo-div">
+              <p class="spinfo" id="long-text">{{ product.pinfo }}</p>
+            </div>
+          </div>
+        </div>
+        <br>
+        {% if sub_products %}
+        <h3 class="hedding">Related {{product.name}} Products</h3>
+        <div class="subpcard">
+          {% for sub_product in sub_products %}
+          <div>
+            <h2 style="position: absolute;background-color: rgb(50, 0, 167);padding: 2px 5px; border-radius: 10px;color: #fff;font-size: 12px;">Sales Price: ₹. {{ sub_product.sales_price }}</h2>
+            <a
+              href="{% url 'appagri:sub_product_details' sub_product.product|slugify sub_product.slug %}"
+            >
+              <img src="{{ sub_product.spimage.url }}" alt="" />
+              <h3>{{ sub_product.name }}</h3>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+	<div class="overlay">
+      <div class="full-image-container">
+        <i class="material-icons" onclick="closeFullImage()">close</i>
+        <img src="" alt="Full Image" class="full-image">
+      </div>
+    </div>
+	<script>
+    	if (window.innerWidth <= 768) {
+      			const introDivs = document.querySelectorAll('#long-text');
+      			introDivs.forEach(introDiv => {
+        			const actualContent = introDiv.textContent.trim();
+        			const wordsArray = actualContent.split(/\s+/);
+        			const displayWords = wordsArray.slice(0, 40).join(' ') + ' . . .';
+        			const actualHeight = window.getComputedStyle(introDiv).height;
+        			const trimmedHeight = '230px';
+        			introDiv.style.overflowY = 'hidden';
+        			introDiv.style.height = trimmedHeight;
+        			introDiv.textContent = displayWords;
+        			const readMore = document.createElement('a');
+        			readMore.innerHTML = 'Read More >>';
+        			readMore.style.color = 'darkblue';
+        			readMore.style.textDecoration = 'underline';
+        			introDiv.appendChild(readMore);
+        			readMore.addEventListener('click', function () {
+          			if (readMore.innerHTML.substr(0,readMore.innerHTML.length-9) === 'Read More') {
+            			introDiv.textContent = actualContent+' '+' . . .'+' '+ ' ';
+            			introDiv.style.height = actualHeight;
+            			readMore.innerHTML = 'Read Less <<';
+          			} else {
+            			introDiv.textContent = displayWords;
+            			introDiv.style.height = trimmedHeight;
+            			readMore.innerHTML = 'Read More >>';
+          			}
+          			introDiv.appendChild(readMore); 
+        		});
+      		});
+    	}
+    	const overlay = document.querySelector('.overlay');
+    	const fullImageContainer = document.querySelector('.full-image-container');
+    	function displayFullImage(imgSrc, imgTitle) {
+      		const fullImage = document.querySelector('.full-image');
+      		fullImage.src = imgSrc;
+      		fullImage.alt = imgTitle;
+     	 	overlay.style.display = 'block';
+      		fullImageContainer.style.display = 'block';
+    	}
+    	function closeFullImage(){
+      		overlay.style.display = 'none';
+      		fullImageContainer.style.display = 'none';
+    	}
+    	if(window.innerWidth <= 768){
+      		const targetDiv =  document.querySelector('.tproduct');
+      		const movingDiv = document.querySelector('.exclusive');
+      		targetDiv.insertAdjacentElement('afterend',movingDiv);
+    	}
+    </script>
+{% endblock %}

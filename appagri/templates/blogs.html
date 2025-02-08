@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/blogs123.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/aboutuspg1.css' %}" />
+    <title>Urban Agriculture | Video Blogs | {{title}}</title>
+{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+    <h3 class="hhedding">Agriculture Blogs & Videos</h3>
+    <br><br>
+    <div class="container">
+      <div class="gallery">
+        <div class="main">
+          <div class="main-img">
+            <div class="item-img active" data-slide="1">
+              <a href="#">
+                <iframe 
+                  width="560" 
+                  height="315" 
+                  src="https://www.youtube.com/embed/l0bpy857deM" 
+                  title="YouTube video player" 
+                  frameborder="0" 
+                  allow="accelerometer; 
+                          autoplay; 
+                          clipboard-write; 
+                          encrypted-media; 
+                          gyroscope; 
+                          picture-in-picture; 
+                          web-share" 
+                  class="main-img-iframe"
+                  controls autoplay
+                  muted>
+                </iframe>
+              </a>
+            </div><!--item-img active closed-->
+          </div><!--main-img closed-->
+        </div><!--main closed-->
+        <div class="list-img">
+          <div class="img-thumbnail">
+            {% for i in blog %}
+              <div class="video-content">
+                <div class="box-text">
+                    <div class="video-heading">
+                      <h3>
+                        <a href="{{ i.embed_url }}" onclick="openFullScreen(this)" title="Click this Blog for more information">{{ i.blog_heading }}</a>
+                      </h3>
+                    </div>
+                    <form method="POST">
+                      <div class="form-div">
+                        <div>
+                          {% csrf_token %}
+                          {% for field in form %}
+                            {{field}}
+                            <hr style>
+                          {% endfor %}
+                          <input type="hidden" name="video_id" value="{{ i.pk }}">
+                        </div>
+                        <button type="Submit" value="Comment">Comment</button>
+                      </div>
+                    </form>
+                    <br>
+                    <h5 class="comment-topic">All Comments</h5>
+                    <div class="prev-comment">
+                      {% for comment in i.comments.all %}
+                      <div style="display:flex;gap:30px;margin-bottom:10px;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; display: none;text-align:center;">
+                          <p style="font-size: 20px; background-color: goldenrod; color: green; font-weight: bolder; padding: 5px 10px;">{{ j.name|slice:"1" }}</p>
+                        </div>
+                        <div>
+                          <div style="display:flex;gap:10px;">
+                            <p style="font-size:13px;color:green;">{{comment.comment}}</p>
+                            <p style="font-size:13px;font-weight:bold;color:black;">by {{comment.name}}</p>
+                            <p style="font-size:13px;color:gray;">{{comment.date}}</p>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function openFullScreen(element) {
+        const videoUrl = element.getAttribute("href");
+        const mainIframe = document.querySelector(".main-img-iframe");
+        mainIframe.removeAttribute("allowfullscreen");
+        mainIframe.setAttribute("src", videoUrl);
+      }
+    </script>
+{% endblock %}

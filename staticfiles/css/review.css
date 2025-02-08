@@ -1,0 +1,102 @@
+.rating{
+    display:flex;
+    justify-content: center;
+}
+.review-stat{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
+    flex-basis: 30%;
+}
+.review-bar-div{
+    flex-basis:50%;
+}
+.review-stat-inside{
+    display:flex; 
+    align-items: center; 
+    gap:1em;
+}
+.review-stat-inside h1 i{
+    color: goldenrod;
+}
+.review-stat p{
+    color:rgb(133, 131, 131);
+}
+.date{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size:0.8em;
+}
+#filledDiv {
+    height: 15px;
+    background-color: white;
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    width: 300px;
+}
+#filledDiv span{
+    position:absolute;
+    height: 15px;
+    border-radius:10px;
+    width:0;
+}
+.review-bar{
+    display:flex;
+    align-items: center;
+    margin-bottom:0.5em;
+    gap:1em;
+}
+.review-bar p{
+    flex-basis: 10%;
+    display:flex;
+    align-items: center;
+}
+.review-bar p i{
+    font-size:0.8em;
+}
+.rate-bar{
+    display:grid; 
+    grid-template-columns: 1fr 1fr;
+    gap:1em;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.reviews{
+  width:80%;
+  margin:auto;
+}
+.reviews h4{
+  color:gray;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.user-review{
+  	display: grid;
+    grid-template-columns: 0.2fr 2fr 1fr;
+}
+.user-review i{
+  color:goldenrod;
+  font-size:1em;
+}
+.name-letter{
+  background-color: lightgray;
+  border-radius: 50%;
+  padding:0.5em 0.8em;
+  font-size:1em;
+  text-transform: uppercase;
+}
+@media (max-width: 770px){
+	.rating{
+    	display:block;
+	}
+	#filledDiv{
+    	width: 200px;
+	}
+	.review-stat{
+    	padding:1em;
+	}
+	.name-letter{
+    	padding: 0.2em 0.5em;
+    	font-size: 0.8em;
+	}
+	.user-review{
+  		display: grid;
+    	grid-template-columns: 0.5fr 2fr 1fr;
+	}
+}

@@ -1,0 +1,33 @@
+#content.colMS h1 {
+    color: darkgreen; 
+    font-weight: bold; 
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.app-appagri .admin th{
+    background-color: darkgreen;
+    border-radius:2px;
+    color:white;
+    font-weight:bold;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    width:20px !important;
+}
+#header{
+    background-color:darkgreen;
+}
+.app-appagri table caption, 
+.app-auth table caption,
+.app-sites table caption{
+    background-color:goldenrod;
+    border-radius:5px;
+}
+.app-appagri table caption a, 
+.app-auth table caption a,
+.app-sites table caption a{
+    color:black !important;
+    font-size:15px;
+    text-transform: capitalize;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+.object-tools a.addlink{
+    background-image:linear-gradient(45deg, darkgreen,green);
+}

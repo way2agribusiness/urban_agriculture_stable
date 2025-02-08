@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<meta charset="UTF-8" />
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    	<meta name="keywords" content="{{ key }}" />
+    	<meta name="description" content="{{ desc }}" />
+    	<link rel="stylesheet" href="{% static 'css/home4.css' %}" />
+    	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+    	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+    	<script src="https://kit.fontawesome.com/b0b94c956e.js" crossorigin="anonymous"></script>
+    	<link rel="preconnect" href="https://fonts.googleapis.com">
+    	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    	<link rel="canonical" href="{{canonical}}">
+    	{% for i in logo %}
+    		<link rel="icon" type="image/x-icon" href="{{ i.image.url }}" />
+    	{% endfor %}    
+    	<!-- Google tag (gtag.js) -->
+    	<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJJGXW6MVM"></script>
+    	<script>
+        	window.dataLayer = window.dataLayer || [];
+        	function gtag(){dataLayer.push(arguments);}
+        		gtag('js', new Date());
+				gtag('config', 'G-ZJJGXW6MVM');
+    	</script>
+        <script type="text/javascript">
+			window.$crisp=[];window.CRISP_WEBSITE_ID="655bf52b-7dd0-460f-8232-4b3718aaa92e";
+			(function(){
+				d=document;s=d.createElement("script");
+				s.src="https://client.crisp.chat/l.js";
+				s.async=1;
+				d.getElementsByTagName("head")[0].appendChild(s);
+			})();
+		</script>
+    {% block head %}{% endblock %}
+    <body>
+        <header style="position:sticky;top:0;z-index:9999;">
+    	<nav>
+        	<div class="navc1">
+            	<a href="/" rel="noopener">
+                	{% for i in logo %}
+                		<img src="{{ i.image.url }}" alt="{{i.alt}}" loading="lazy" />
+                		<div class="web-name"><p>{{ i.name }}</p></div>
+                	{% endfor %}
+            	</a>
+        	</div>
+        	<div class="navc2" id="content">
+            	<a href="/">Home</a>
+            	<a href="/aboutus">About Us</a>
+            	<a href="/kcenter">K Center</a>
+            	<a href="{% url 'appagri:ats' %}">Agritech Mart</a>
+            	<a href="/blogs">Video Blogs</a>
+            	<a href="/contact">Contact Us</a>
+        	</div>
+            <div class="phone_div1">
+				<form method="post" action="{% url 'appagri:home' %}">
+				  {% csrf_token %}
+				  <label for="Phone_number" class="form-label-f">Enter Your Mob No. For Queries</label>
+				  <input type="text" id="Phone_number" name="number" class="form-control-f" pattern="\d{10}" title="Please Enter You Number">
+				  <button type="submit" class="btn-submit-f">Submit</button>
+				</form>
+			  </div>
+        	<i class="material-icons mobile-menu-icon" style="display: none" id="mobile-menu">menu</i>
+    	</nav>
+        
+    	<div id="menu-mobile">
+        	{% block nav %}<button onclick="mySidebar()" class="pulse" id="sidebarview">Terrace Gardening Products</button>{% endblock %}
+        	<hr style="color: darkseagreen; border: 1px solid;margin:10px auto;">
+        	<p><a href="/">Home</a></p>
+        	<p><a href="/aboutus">About Us</a></p>
+        	<p><a href="/kcenter">K Center</a></p>
+        	<p><a href="{% url 'appagri:ats' %}">Agritech Mart</a></p>
+        	<p><a href="/blogs">Video Blogs</a></p>
+        	<p><a href="/contact">Contact Us</a></p>
+    	</div>
+        
+    	</header>
+        {% block content %}{% endblock %}
+    	<footer class="footer fchange">
+        <div class="footer1">
+          <h1>Urban Agriculture</h1>
+          <div class="share-links">
+            <a href="https://www.facebook.com/way2agribusiness" target="_blank" rel="noopener"><i class="fa fa-facebook-square"></i></a>
+            <a href="https://twitter.com/Way2agribusines" target="_blank" rel="noopener"><i class="fa fa-twitter"></i></a>
+            <a href="https://in.pinterest.com/Way2Agritech/_saved/" target="_blank" rel="noopener"><i class="fa fa-pinterest"></i></a>
+            <a href="https://www.youtube.com/channel/UCEpkh59M-MDOj0TH6lxRpMg" target="_blank" rel="noopener"><i class="fa fa-youtube"></i></a>
+            <a href="https://www.instagram.com/way2agribusiness/" target="_blank" rel="noopener"><i class="fa fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/feed/?trk=homepage-basic_signin-form_submit" target="_blank" rel="noopener"><i class="fa fa-linkedin"></i></a>
+          </div>
+        </div>
+        <hr/>
+        <div class="footer_info">
+          <div class="footer_info-div">
+            <h3>Contact Us</h3>
+            <div class="contact_div">
+              <div class="place_div">
+                <i class="material-icons">place</i>
+                <a href="https://www.google.com/maps/place/Way2Agribusiness+India+Pvt+Ltd/@13.015956,77.54541,15z/data=!4m6!3m5!1s0x3bae234a43de2765:0x4dc2c8416831cc0!8m2!3d13.0159559!4d77.5454099!16s%2Fg%2F11b6llkwn7?hl=en&entry=ttu" target="_blank" rel="noopener">
+                    <address class="text_font">
+                      ಕೃಷಿ ಮಿತ್ರ/ Krushi Mithra # 636, BDA Block 2, APMC (RMC) Yard, Yeshwanthpura, Bengaluru - 560022
+                      <br />
+                    </address>
+                </a>
+              </div>
+             <div class="phone_div">
+              <form method="post" action="{% url 'appagri:home' %}">
+                {% csrf_token %}
+                <label for="Phone_number" class="form-label">Enter your Number We Will Contact You</label>
+                <input type="phone" name="number" class="form-control">
+                <button type="submit" class="btn-submit">Submit</button>
+            </form>
+              <i class="material-icons">phone</i>
+              <div>
+                <a href="tel:+91-9449004956" target="_blank" rel="noopener">9449004956</a>
+                <a href="tel:+91-8277078435" target="_blank" rel="noopener">8277078435</a>
+                <a href="tel:+91-8095000388" target="_blank" rel="noopener">8095000388</a>
+                <a href="tel:+080 24484173" target="_blank" rel="noopener">080 24484173</a>
+              </div>
+            </div>
+              <div class="mail_div">
+                <i class="material-icons">mail</i>
+                <div>
+                    <a href="mailto:way2agritech@way2agribusiness.com" target="_blank" rel="noopener">way2agritech@way2agribusiness.com</a>
+                    <a href="mailto:contact@way2agribusiness.com" target="_blank" rel="noopener">agriclinic@way2agribusiness.com</a>
+                    <a href="mailto:way2agritech@gmail.com" target="_blank" rel="noopener">way2agritech@gmail.com</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="loc_div">
+            <h3>Location</h3>
+            <div>
+	
+				<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7774.622049300553!2d77.5425519!3d13.015855!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3d16cdf05995%3A0x3710354fdabf9e1b!2sWay2Agribusiness%20India%20Pvt%20LTD!5e0!3m2!1sen!2sin!4v1729484414022!5m2!1sen!2sin" 
+				width="100%" 
+				height="200" 
+				allowfullscreen 
+				loading="lazy" 
+				referrerpolicy="no-referrer-when-downgrade" 
+				title="Way2Agribusiness Location"
+				style="border: none; outline: 2px solid yellow; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+		</iframe>
+		
+
+            </div>
+          </div>
+          <div class="services_div">
+			<h3 class="services_heading">Our Online Services</h3>
+			<div class="services_content">
+				<div class="service-list">
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="material-icons">business</i>
+							<a href="https://www.way2agribusiness.com/" class="list" target="_blank" rel="noopener">Corporate Website</a>
+						</div>
+						<a href="https://www.way2agribusiness.com/" class="link" target="_blank" rel="noopener">www.way2agribusiness.com</a>
+					</div>
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="material-icons">psychology</i>
+							<a href="https://www.way2agriintel.com/" class="list" target="_blank" rel="noopener">Agri Intelligence</a>
+						</div>
+						<a href="https://www.way2agriintel.com/" class="link" target="_blank" rel="noopener">www.way2agriintel.com</a>
+					</div>
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="fa-solid fa-apple-whole" aria-hidden="true"></i>
+							<a href="https://www.way2foods.in/" class="list" target="_blank" rel="noopener">Agri Output Brand</a>
+						</div>
+						<a href="https://www.way2foods.in/" class="link" target="_blank" rel="noopener">www.way2foods.in</a>
+					</div>
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="material-icons">diversity_3</i>
+							<a href="https://www.karnatakaagribusiness.com/" class="list" target="_blank" rel="noopener">Agribiz Platform</a>
+						</div>
+						<a href="https://www.karnatakaagribusiness.com/" class="link" target="_blank" rel="noopener">www.karnatakaagribusiness.com</a>
+					</div>
+				</div>
+				<div class="service-list">
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="fa-solid fa-truck" aria-hidden="true"></i>
+							<a href="https://www.way2agritech.com/" class="list" target="_blank" rel="noopener">Agri Input Brand</a>
+						</div>
+						<a href="https://www.way2agritech.com/" class="link" target="_blank" rel="noopener">www.way2agritech.com</a>
+					</div>
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="fa-solid fa-seedling" aria-hidden="true"></i>
+							<a href="https://www.drsoilhealth.com/" class="list" target="_blank" rel="noopener">Fertilizer &amp; Pesticides</a>
+						</div>
+						<a href="https://www.drsoilhealth.com/" class="link" target="_blank" rel="noopener">www.drsoilhealth.com</a>
+					</div>
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="fa-solid fa-carrot" aria-hidden="true"></i>
+							<a href="https://www.way2vegetables.com/" class="list" target="_blank" rel="noopener">Vegetables Online</a>
+						</div>
+						<a href="https://www.way2vegetables.com/" class="link" target="_blank" rel="noopener">www.way2vegetables.com</a>
+					</div>
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="material-icons">store</i>
+							<a href="https://www.farmneedz.com/" class="list" target="_blank" rel="noopener">IndiaMart Platform</a>
+						</div>
+						<a href="https://www.farmneedz.com/" class="link" target="_blank" rel="noopener">www.farmneedz.com</a>
+					</div>
+				</div>
+				<div class="service-list">
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="fa-solid fa-robot" aria-hidden="true"></i>
+							<a href="https://www.way2smartfarmer.com/" class="list" target="_blank" rel="noopener">Compare &amp; Select</a>
+						</div>
+						<a href="https://www.way2smartfarmer.com/" class="link" target="_blank" rel="noopener">www.way2smartfarmer.com</a>
+					</div>
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="material-icons">agriculture</i>
+							<a href="https://www.powertiller.in/" class="list" target="_blank" rel="noopener">Agritech &amp; Machinery</a>
+						</div>
+						<a href="https://www.powertiller.in/" class="link" target="_blank" rel="noopener">www.powertiller.in</a>
+					</div>
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="material-icons">yard</i>
+							<a href="https://www.urbanagriculture.in/" class="list" target="_blank" rel="noopener">Terrace Gardening</a>
+						</div>
+						<a href="https://www.urbanagriculture.in/" class="link" target="_blank" rel="noopener">www.urbanagriculture.in</a>
+					</div>
+					<div class="service-item">
+						<div class="footer-div">
+							<i class="fa-solid fa-mobile-screen" aria-hidden="true"></i>
+							<a href="https://play.google.com/store/apps/details?id=com.way2abi.way2abi" class="list" target="_blank" rel="noopener">Way2ABI Agri FBI App</a>
+						</div>
+						<a href="https://play.google.com/store/apps/details?id=com.way2abi.way2abi" class="link" target="_blank" rel="noopener">play.google.com/store/apps/...</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+        <hr style="margin: 10px 0" />
+        <div class="legal">
+          <p>
+            CopyRight &copy; 2023 Way2Agribusines India Pvt Ltd. All Rights
+            Reserved
+          </p>
+        </div>
+      </footer>
+    	<script>
+            document.getElementById('Phone_number').addEventListener('input',function(){
+        		this.value=this.value.replace(/[^0-9]/g,'');
+        		if (this.value.length > 10){
+          		this.value=this.value.slice(0,10);
+        		}
+        	});
+    		const currentPath = window.location.pathname;
+        	const currentHREF = window.location.href;
+    		const navLinks = document.querySelectorAll('.navc2 a');
+    		const mobileMenu = document.getElementById('mobile-menu');
+    		const deskMenu = document.getElementById('menu-mobile');
+    
+    		window.addEventListener('scroll',function(){
+      			deskMenu.style.display = 'none';
+    		});
+   
+    		navLinks.forEach((link) => {
+      			if (link.getAttribute('href') === currentPath) {
+        			link.classList.add('active');
+      			}
+    		});
+    
+    		mobileMenu.addEventListener('click', function () {
+      			if (deskMenu.style.display === 'block') {
+        			deskMenu.style.display = 'none';
+      			} else {
+        		deskMenu.style.display = 'block';
+      		}});
+        	
+        	for (let i=0; i < navLinks.length;i++){
+        		if(navLinks[i].className === 'active'){
+          			if (navLinks[i].baseURI === window.location.href){
+            			navLinks[i].style.borderBottom = '2px solid goldenrod';
+          			}
+        		} else {
+          			if (currentHREF.endsWith('/')){
+            			url = currentHREF.slice(0, -1);
+            			if (navLinks[i].href === url){
+              				navLinks[i].style.borderBottom = '2px solid goldenrod';
+            			}
+          			}else{
+            			if (navLinks[i].href === currentHREF){
+              				navLinks[i].style.borderBottom = '2px solid goldenrod';
+            			}
+          			}
+          		}
+      		}
+        </script>
+  	</body>
+  	<script src="{% static 'js/script.js' %}"></script>
+</html>

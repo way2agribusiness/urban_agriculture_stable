@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/aboutuspg2.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/kcenter.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/new.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/stylepg2.css' %}" />
+    <title>Urban Agriculture | K Center {{ title }}</title>
+    <style>
+        .footer{
+            margin-left:0px;
+        }
+    </style>
+{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+    <h1 class="hedding">Way2Agribusiness Knowledge Center</h1>
+    <p id="long_text" class="kcenter-intro" >
+        The core focus of www.way2agribusiness.com is its five products & services such as Way2Agritech (cutting edge agri-tech solutions for farmers), Way2Foods (food crops for households & HORECA), Way2ABI Agri FBI (market intelligence services through mobile app), Way2Market (trading platform app) and project management consultancy service. Agribusiness exposure and knowledge transformation is one of our core activities. With this background, Knowledge Centre & Videos (KC & Videos) address the knowledge gap on products and services we offer and covers relevant information, technical guidance & live videos for the benefit of farmers and other participants in agribusiness operations.
+    </p>
+    <br>
+    <section  class ="sec-list" >
+        {% for i in items %}
+            <a href="#"  class="open-popup" data-image="{{ i.ktopicimg.url }}" text1="{{i.text1}}"  text2="{{i.text2}}" text3="{{i.text3}}" text4="{{i.text4}}" text5="{{i.text5}}"  text6="{{i.text6}}" text7="{{i.text7}}" text8="{{i.text8}}" ktopicintro="{{i.ktopicintro}}" ktopic="{{i.ktopic}}" ktopicconclusion="{{i.ktopicconclusion}}">
+                <p class="list-text" >{{ i }}</p>
+            </a>
+        {% endfor %}
+    </section>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span id="closePopup" class="close">&times;</span>
+            <p id ="popupTextTopic" ></p>
+            <p id ="popupTextIntro" style="color:black"></p>
+            <div class="pop-div1" >
+                <img id="popupImage" src="" alt="Popup Image" >
+                <div class="pop-scroll" style="color:black">
+                    <ol>
+                        <li id="popupText1"  style="font-size:14px;padding:10px;text-align: justify;margin-left:15px;">*</li>
+                        <li id="popupText2"  style="font-size:14px;padding:10px;text-align: justify;margin-left:15px;">*</li>
+                        <li id="popupText3"  style="font-size:14px;padding:10px;text-align: justify;margin-left:15px;">*</li>
+                        <li id="popupText4"  style="font-size:14px;padding:10px;text-align: justify;margin-left:15px;">*</li>
+                        <li id="popupText5"  style="font-size:14px;padding:10px;text-align: justify;margin-left:15px;">*</li>
+                        <li id="popupText6"  style="font-size:14px;padding:10px;text-align: justify;margin-left:15px;">*</li>
+                        <li id="popupText7"  style="font-size:14px;padding:10px;text-align: justify;margin-left:15px;">*</li>
+                        <a href="" id="popupText8"  style="font-size:14px;padding:10px;text-align: justify;margin-left:15px;">*</a>
+                    </ol> 
+                </div>
+            </div>
+            <hr style="padding-top: 10px;padding-bottom: 10px;">
+            <p id ="popupTextConclude" style="color:black"></p>
+        </div>
+    </div>
+    <script>
+        // Get the elements
+        const popup = document.getElementById('popup');
+        const closePopupButton = document.getElementById('closePopup');
+        const popupImage = document.getElementById('popupImage');
+        const popupTextTopic = document.getElementById('popupTextTopic');
+        const popupTextIntro = document.getElementById('popupTextIntro');
+        const popupTextConclude = document.getElementById('popupTextConclude');
+        const popupText1 = document.getElementById('popupText1');
+        const popupText2 = document.getElementById('popupText2');
+        const popupText3 = document.getElementById('popupText3');
+        const popupText4 = document.getElementById('popupText4');
+        const popupText5 = document.getElementById('popupText5');
+        const popupText6 = document.getElementById('popupText6');
+        const popupText7 = document.getElementById('popupText7');
+        const popupText8 = document.getElementById('popupText8');
+        
+        // Function to open the popup with content
+        function openPopup(imageSrc, topic,intro,text1,text2,text3,text4,text5,text6,text7,text8,conclude) {
+            popupImage.src = imageSrc;
+            popup.style.display = 'block';
+            popupTextTopic.textContent = topic;
+            popupTextIntro.textContent = intro;
+            popupTextConclude.textContent = conclude
+            popupText1.textContent = '◙ '+text1
+            popupText2.textContent = '◙ '+text2
+            popupText3.textContent = '◙ '+text3
+            popupText4.textContent = '◙ '+text4
+            popupText5.textContent = '◙ '+text5
+            popupText6.textContent = '◙ '+text6
+            popupText7.textContent = '◙ '+text7
+            popupText8.innerHTML = '<a href="' + text8 + '" target="_blank" style="color: blue; text-decoration: none;"><span style ="color:black;text-decoration: none;text-align:justify;">◙ To Explore More @ </span>' + text8 + '</a>';
+
+            function hideIfShort(paragraph) {
+                if (paragraph && paragraph.textContent.trim().length < 5) {
+                paragraph.style.display = 'none';
+                }
+            }
+            
+            hideIfShort(popupText1);
+            hideIfShort(popupText2);
+            hideIfShort(popupText3);
+            hideIfShort(popupText4);
+            hideIfShort(popupText5);
+            hideIfShort(popupText6);
+            hideIfShort(popupText7);
+            hideIfShort(popupText8);
+        }
+        
+        // Close the popup
+        closePopupButton.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+        
+        // Close the popup when clicking outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === popup) {
+                popup.style.display = 'none';
+            }
+        });
+        
+        // Attach click event listeners to all links with class 'open-popup'
+        document.querySelectorAll('.open-popup').forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const imageSrc = link.getAttribute('data-image');
+                const topic = link.getAttribute('ktopic');
+                const intro = link.getAttribute('ktopicintro') ;
+                const conclude = link.getAttribute('ktopicconclusion') ;
+                const text1 = link.getAttribute('text1');
+                const text2 = link.getAttribute('text2');
+                const text3 = link.getAttribute('text3');
+                const text4 = link.getAttribute('text4');
+                const text5 = link.getAttribute('text5');
+                const text6 = link.getAttribute('text6');
+                const text7 = link.getAttribute('text7');
+                const text8 = link.getAttribute('text8');
+
+                openPopup(imageSrc,topic,intro,text1,text2,text3,text4,text5,text6,text7,text8,conclude);
+            });
+        });
+        </script>
+        
+{% endblock %}

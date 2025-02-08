@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}  <!-- Load the custom filters -->
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/sppg4.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/detailspg2.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/aboutuspg1.css' %}" />
+    <title>Urban Agriculture | {{ sub_product.name }} | {{ title }}</title>
+{% endblock %}
+
+{% block content %}
+  <div class="tproduct">
+    <div class="url">
+      <a href="/terrace-gardening-products">Terrace Gardening Product Categories</a>
+      <button onclick="goBack()" id="backbtn">Back</button>
+    </div>
+  </div>
+  <h3 class="hedding">{{ sub_product.name }}</h3>
+  <div class="spmain">
+    <div class="spimg">
+      <div>
+        <img src="{{ sub_product.spimage.url }}" alt="" />
+      </div>
+      <div class="imgdown">
+        <div class="share">
+          <span class="pulse">Enquire now</span>
+          <div>
+            <a href="tel:+919449004956"><i class="fa fa-phone"></i></a>
+            <a href="https://wa.me/9449004956"><i class="fa fa-whatsapp"></i></a>
+            <a href="mailto:way2agribusiness@gmail.com"><i class="fa fa-envelope"></i></a>
+            <a href="sms:+919449004956"><i class="fa fa-commenting-o"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spdetails">
+      <div class="user-reviews">
+        <div class="prize-rate">
+          <div class="prize-main">
+            <p class="prize" style="margin-left:10px;">Special prize</p>
+            <div class="price">
+              <h1>₹{{ sub_product.sales_price }} </h1>
+              <span style="font-weight:normal;margin-left:-8px;">{{ sub_product.quantity }}</span>
+              <p style="margin: 0; text-decoration: line-through;">₹{{ sub_product.mrp }}</p>
+              <h3 style="margin: 0">{{ sub_product.total }}</h3>
+            </div>
+          </div>
+          
+          <!-- Discount Percentage -->
+          <p style="font-weight: bold; color: green;">
+            Discount: {{ sub_product.mrp|discount_percentage:sub_product.sales_price }}%
+          </p>
+          
+          {% if total_rate != None %}
+            <p class="prize" style="margin-left:20px;">Rating</p>
+            <br>
+            <div class="review">
+              <h5>
+                <strong>{{ total_rate | floatformat:1 }}/5</strong> 
+                <i class="fas fa-star" style="color: #215d0e"></i>
+              </h5>
+              <br>
+            </div>
+          {% endif %}
+          <button class="rate-btn"><a href="{% url 'appagri:review' sub_product.product|slugify sub_product.slug %}">Rate Product</a></button>
+          <br>
+        </div>
+
+        {% if product_reviews %}
+          <div class="reviews-section">
+            <h5>
+              <span>Rate & Reviews</span>
+              <span id="avg-rate">
+                <strong>{{ total_rate | floatformat:1 }}/5</strong> 
+                <i class="fas fa-star"></i>
+              </span>
+            </h5>
+            <div class="usereview">
+              {% for review in product_reviews %}
+                <div class="first-line">
+                  <span class="star">
+                    <span>{{ review.rating }}</span>
+                    <i class="fas fa-star"></i>
+                  </span>
+                  <em><strong>{{ review.name }}</strong></em>
+                </div>
+                <br>
+                <div class="second-line">
+                  <p>{{ review.review }}</p>
+                  <img src="{{ review.r_image.url }}" alt="reviewed user image" loading="lazy" onclick="zoomImg('{{ review.r_image.url }}')">
+                </div>
+                {% for res in response %}
+                  {% if review.review_token == res.review.review_token %}
+                    <em>Admin Response</em>
+                    <span>{{ res.response_text }}</span>
+                  {% endif %}
+                {% endfor %}
+                <hr>
+                <br>
+                <div class="overlay-img">
+                  <i class="material-icons" id="remove-icon1" onclick="removeIcon()">close</i>
+                  <div class="image-container">
+                    <img src="" alt="reviewed user image" loading="lazy" class="full-img">
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    
+
+  	if (window.innerWidth <= 768) {
+      			const introDivs = document.querySelectorAll('#long-text');
+      			introDivs.forEach(introDiv => {
+        			const actualContent = introDiv.textContent.trim();
+        			const wordsArray = actualContent.split(/\s+/);
+        			const displayWords = wordsArray.slice(0, 40).join(' ') + ' . . .';
+        			const actualHeight = window.getComputedStyle(introDiv).height;
+        			const trimmedHeight = '200px';
+        			introDiv.style.overflowY = 'hidden';
+        			introDiv.style.height = trimmedHeight;
+        			introDiv.textContent = displayWords;
+        			const readMore = document.createElement('a');
+        			readMore.innerHTML = 'Read More >>';
+        			readMore.style.color = 'darkblue';
+        			readMore.style.textDecoration = 'underline';
+        			introDiv.appendChild(readMore);
+        			readMore.addEventListener('click', function () {
+          			if (readMore.innerHTML.substr(0,readMore.innerHTML.length-9) === 'Read More') {
+            			introDiv.textContent = actualContent+' '+' . . .'+' '+ ' ';
+            			introDiv.style.height = actualHeight;
+            			readMore.innerHTML = 'Read Less <<';
+          			} else {
+            			introDiv.textContent = displayWords;
+            			introDiv.style.height = trimmedHeight;
+            			readMore.innerHTML = 'Read More >>';
+          			}
+          			introDiv.appendChild(readMore); 
+        		});
+      		});
+        }
+    function toggleRatingForm() {
+        const ratingForm = document.querySelector('.overlay');
+        ratingForm.style.display = (ratingForm.style.display === 'none') ? 'block' : 'none';
+    }
+    function removeIcon(){
+      const ratingForm = document.querySelector('.overlay');
+      ratingForm.style.display = (ratingForm.style.display === 'none') ? 'block' : 'none';
+    }
+  	const checkedBoxes = document.getElementsByClassName('selected_component');
+    const numberBoxes = document.getElementsByClassName('quantity');
+    for (let index = 0; index < checkedBoxes.length && index < numberBoxes.length; index++) {
+      if (!checkedBoxes[index].className.includes('Flexi')){
+        checkedBoxes[index].checked = true;
+        checkedBoxes[index].disabled = false;
+        numberBoxes[index].value = '1';
+        numberBoxes[index].readOnly = true;
+      }
+    };
+  	function cutomerInfoForm() {
+      const form = document.querySelector('.overlay1');
+      const checkBoxes = document.querySelectorAll('.selected_component');
+      let anyChecked = false;
+      for (const checkBox of checkBoxes) {
+        if (checkBox.checked) {
+            anyChecked = true;
+            break; 
+        }
+      }
+      if (anyChecked) {
+        form.style.display = 'block';
+      } else {
+        form.style.display = 'none';
+      }
+    }
+    function quantCalci (){
+      const checkBoxes = document.querySelectorAll('.selected_component');
+      const quantityInputs = document.querySelectorAll('.quantity');
+      let previouslyCheckedIndex = -1;
+      let quantityValues = [];
+      checkBoxes.forEach((checkbox, index) => {
+        if (checkbox.checked) {
+          quantityInputs[index].style.display = 'block';
+          if (previouslyCheckedIndex !== -1 && previouslyCheckedIndex !== index) {
+            console.log("Previously checked checkbox index:", previouslyCheckedIndex);
+            
+          }
+          previouslyCheckedIndex = index;
+          quantityValues[index] = quantityInputs[index].value;
+          quantityInputs[index].value = quantityValues[index] || 1;
+          quantityInputs[index].min = 1;
+          quantityInputs[index].readOnly = false;
+        }
+        else {
+          quantityInputs[index].value = quantityValues[index] || 0;
+          quantityInputs[index].readOnly = true;
+        };
+      });
+    }
+    function removeIconCustForm(){
+      const form = document.querySelector('.overlay1');
+      form.style.display = (form.style.display === 'none') ? 'block' : 'none';
+    }
+    const billDiv = document.querySelector('.calci');
+    billDiv.style.display = 'none';
+    function totalAmtCalci(){
+      const selectedComponents = document.querySelectorAll('.selected_component:checked');
+      let totalAmount = 0; 
+      let discountAmount = 0;
+      selectedComponents.forEach(function(component) {
+        const componentDiv = component.closest('.component');
+        const priceElement = componentDiv.querySelector('#component_price strong');
+        const quantityElement = componentDiv.querySelector('.quantity');
+        let price = parseFloat(priceElement.textContent.replace('₹. ', '').trim());
+        let quantity = parseInt(quantityElement.value);
+        totalAmount += price * quantity;
+      });
+      const billAmt = document.querySelector('#total_price');
+      const discountAmt = document.querySelector('#discount_price');
+      if (totalAmount >= 1000){
+         discountAmount = totalAmount - ((totalAmount * 5)/100);
+         billAmt.innerHTML = `₹. ${totalAmount}`;
+         discountAmt.innerHTML = `₹. ${discountAmount}`;
+         billDiv.style.display = 'block';
+      }
+      else if (totalAmount >= 3000){
+        discountAmount = totalAmount - ((totalAmount * 6)/100);
+        billAmt.innerHTML = `₹. ${totalAmount}`;
+        discountAmt.innerHTML = `₹. ${discountAmount}`;
+        billDiv.style.display = 'block';
+      }
+      else if (totalAmount >= 5000){
+        discountAmount = totalAmount - ((totalAmount * 7)/100);
+        billAmt.innerHTML = `₹. ${totalAmount}`;
+        discountAmt.innerHTML = `₹. ${discountAmount}`;
+        billDiv.style.display = 'block';
+      }
+      else{
+        billAmt.innerHTML = `₹. ${totalAmount}`;
+        discountAmt.innerHTML = `₹. ${totalAmount}`;
+        billDiv.style.display = 'block';
+      }
+    }
+  </script>
+{% endblock %}

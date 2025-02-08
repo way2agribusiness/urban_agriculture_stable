@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/sppg4.css' %}" />
+  	<link rel="stylesheet" href="{% static 'css/aboutuspg1.css' %}" />
+    <title>Urban Agriculture |Agritech Mart Supplier Acknowledgement </title>
+{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+	<br><br>
+    <div class="popup-form">
+        <h3 style="line-height:50px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;text-transform: capitalize;">Thank You &#128512; !!! Your Valuable Enquiry has been Submitted Successfully. Will contact you soon</h3>
+        <button><a href="{% url 'appagri:ats' %}">Back</a></button>
+    </div>
+	<br><br>
+{% endblock %}

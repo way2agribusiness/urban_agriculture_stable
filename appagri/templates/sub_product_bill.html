@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/sppg4.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/aboutuspg1.css' %}" />
+    <title>Urban Agriculture | {{sub_product.name}} | {{title}}</title>
+{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+    <div class="tproduct">
+        <div class="url">
+          <button onclick="goBack()" id="backbtn">Back</button>
+        </div>
+    </div>
+    <br>
+    <div class='bill'>
+      <h1>Invoice</h1>
+      <div class="invoice">
+        <p class="cust_name"><strong>Name</strong> <span>{{bill.customer_name}}</span></p>
+        <p class="cust_name"><strong>Phone Number</strong> <span>{{bill.phone_no}}</span></p>
+        <p class="cust_name"><strong>Kit</strong> <span>{{bill.kit.name}}</span></p><br>
+        <div class="cust_name1">
+          <strong>Selected Products</strong>
+          <div class="select">
+            {% for i,j in selected_component %}
+              <div class="kit-comp">
+                {% for kit_component in kit_components %}
+                  {% if kit_component.component_name in i %}
+                    <span>{{i}} - <strong>{{j}} Nos.</strong></span>
+                    <img src="{{kit_component.component_image.url}}" alt="{{kit_component.component_name}}"></img>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <br>
+        <p class="cust_name"> <strong>Sales Price </strong><span>{{bill.total_amount}}</span></p>
+        <p class="cust_name"> <strong>Discounted Sales Price </strong> <span>{{bill.discount_price}}</span></p>
+      </div>
+      <br>
+      <h1>Contact & Payment Details</h1>
+      <p class="cust_name"><strong>Organization Name</strong> <span>Way2Agribusiness India Pvt. Ltd. Bangalore.</span></p>
+      <p class="cust_name"><strong>Contact No.</strong> <span>9449004956</span></p>
+      <div class="cust_name1"><strong>Payment Modes</strong></div>
+      <p class="cust_name"><strong>Phonepe/Gpay</strong> <span>9449004956</span></p>
+      <p class="cust_name" style="text-align: center"><strong>or</strong></p>
+      <p class="cust_name"><strong>Account No.</strong> <span>313505000175</span></p>
+      <p class="cust_name"><strong>Account Name</strong> <span>Way2Agribusiness India Pvt. Ltd.<span></p>
+      <p class="cust_name"><strong>IFSC </strong> <span><span>ICIC0003135</p>
+    </div>
+    <br>
+{% endblock %}
