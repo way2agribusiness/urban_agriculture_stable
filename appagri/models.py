@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 
 
+
 class ContactNumber(models.Model):
 	phone_number = models.CharField(max_length=20)
 	Time= models.DateTimeField(null=True)
@@ -131,32 +132,72 @@ class Blogs(models.Model):
 		verbose_name = 'Post Blogs'
 		verbose_name_plural = 'Post Blogs'
 
-class kcentercategories(models.Model):
-    categories = models.CharField(max_length=200)
-    categoriesslug = models.SlugField(unique=True, blank=True,null=True)
-    
+from django.db import models
+from cloudinary.models import CloudinaryField
+
+# Your KCenter model
+class KCenter(models.Model):
+    title = models.CharField(max_length=500, null=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    image = CloudinaryField(null=True, blank=True)
+    alt = models.CharField(max_length=500, default='', blank=True)
+    text1 = models.CharField(max_length=1000, null=True, blank=True)
+    text2 = models.CharField(max_length=1000, null=True, blank=True)
+    text3 = models.CharField(max_length=1000, null=True, blank=True)
+    text4 = models.CharField(max_length=1000, null=True, blank=True)
+    text5 = models.CharField(max_length=1000, null=True, blank=True)
+    text6 = models.CharField(max_length=1000, null=True, blank=True)
+    text7 = models.CharField(max_length=1000, null=True, blank=True)
+    text8 = models.CharField(max_length=1000, null=True, blank=True)
+    text9 = models.CharField(max_length=1000, null=True, blank=True)
+    text10 = models.CharField(max_length=1000, null=True, blank=True)
+
+    # String reference to 'Category' to avoid circular import
+    categories = models.ManyToManyField('Category', blank=True)
+
     def __str__(self):
-        return self.categories
-    
+        return self.title
+
     class Meta:
-        verbose_name = 'Enter KCenter Category'
-        verbose_name_plural = 'Enter KCenter Category'
-    
-class kcentertopic(models.Model):
-    category = models.ForeignKey('kcentercategories', on_delete=models.CASCADE,null=True)
+        verbose_name = 'Enter KCenter Details'
+        verbose_name_plural = 'Enter KCenter Details'
+
+
+# Your Category model (this should already be defined in the same file or a separate one)
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class KCenterTopic(models.Model):
+    kcenter = models.ForeignKey('KCenter', related_name='topics', on_delete=models.CASCADE, null=True)
     ktopic = models.CharField(max_length=200)
-    ktopic_slug = models.SlugField(unique=True, blank=True,null=True)
+    ktopic_slug = models.SlugField(unique=True, blank=True, null=True)
     ktopicimg = CloudinaryField()
-    ktopictext = models.TextField(null=True)
+    alt = models.CharField(max_length=110, null=True, blank=True)
     ktopicintro = models.TextField(default='')
+    text1 = models.CharField(max_length=1000, null=True, blank=True)
+    text2 = models.CharField(max_length=1000, null=True, blank=True)
+    text3 = models.CharField(max_length=1000, null=True, blank=True)
+    text4 = models.CharField(max_length=1000, null=True, blank=True)
+    text5 = models.CharField(max_length=1000, null=True, blank=True)
+    text6 = models.CharField(max_length=1000, null=True, blank=True)
+    text7 = models.CharField(max_length=1000, null=True, blank=True)
+    text8 = models.CharField(max_length=1000, null=True, blank=True)
     ktopicconclusion = models.CharField(max_length=1000)
     
+    # ForeignKey to Category model
+    category = models.ForeignKey('Category', related_name='topics', on_delete=models.SET_NULL, null=True, blank=True)
+
     def __str__(self):
-        return f'{self.category}-{self.ktopic}'
+        return f'{self.ktopic}'
     
     class Meta:
         verbose_name = 'Enter KCenter Category-Specific Topic'
         verbose_name_plural = 'Enter KCenter Category-Specific Topic'
+
 
 class Product(models.Model):
 	CHOICES = (('Terrace Gardening','Terrace Gardening'),('Irrigation Solutions', 'Irrigation Solutions'))

@@ -12,7 +12,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = "/media/"
 SECRET_KEY = 'django-insecure-qda2g=njwc1ern=9amy!4=2v_iea3c$w%j41+-p(ili%a62yml'
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.urbanagriculture.in', 'urbanagriculture.in']
+ALLOWED_HOSTS = ['165.232.181.109','127.0.0.1', 'localhost', 'www.urbanagriculture.in', 'urbanagriculture.in']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 INSTALLED_APPS = [
@@ -42,6 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 ROOT_URLCONF = 'clinic.urls'
 TEMPLATES = [
@@ -68,12 +69,8 @@ WSGI_APPLICATION = 'clinic.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'urban_agriculture',
-        'USER': 'urban',
-        'PASSWORD': 'AVNS_5ha1MfzHBjiRDafWRec',
-        'HOST': 'way2agribusiness-mysql-do-user-13941505-0.b.db.ondigitalocean.com',
-        'PORT': '25060'
+        'ENGINE': 'django.db.backends.sqlite3',  # Use SQLite backend
+        'NAME': BASE_DIR / 'db.sqlite3',  # This will create a file named db.sqlite3 in the project root directory
     }
 }
 

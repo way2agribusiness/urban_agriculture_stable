@@ -6,7 +6,7 @@ from django.views.generic import ListView,DetailView
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect ,HttpResponse
 from .models import Main_category,sub_cat,Product1,sess,Newone,ContactNumber,Home_Information ,Highlights, Banner, Blogs, Logo, Brands, ReviewResponse
-from .models import SeoPageExtLinks,Comments,Contacts,Credentials,Product, Review, ATSInfo, ATSContactInfo, ATSIntro, ATSContactProductInfo, ATSContactProductImages, ATSSeller, ATSSellerProductImage, ATSRoadmap,FeaturedListing, kcentertopic
+from .models import SeoPageExtLinks,Comments,Contacts,Credentials,Product, Review, ATSInfo, ATSContactInfo, ATSIntro, ATSContactProductInfo, ATSContactProductImages, ATSSeller, ATSSellerProductImage, ATSRoadmap,FeaturedListing, KCenterTopic
 from django.shortcuts import render, get_object_or_404
 from .forms import Newform, CommentForm, ReviewForm, KitComponentSelectedForm, ATSSellerForm,ATSSellerProductImageFormSet, ContactForm, CategoryForm,TopicForm
 from django.urls import reverse,path

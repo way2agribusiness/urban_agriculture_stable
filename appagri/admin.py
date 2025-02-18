@@ -1,12 +1,12 @@
 from django.contrib import admin
 from .models import ContactNumber, Newone,sess,Banner, Highlights, Home_Information, Blogs, Logo, ATSInfo, ATSContactInfo,ATSContactProductInfo,ATSContactProductImages,ATSIntro,ATSSeller, ATSSellerProductImage, ATSRoadmap
-from .models import Brands,Product1, SeoPageExtLinks,Credentials,Comments,Contacts, Review, kcentertopic
+from .models import Brands,Product1, SeoPageExtLinks,Credentials,Comments,Contacts, Review, KCenterTopic
 from django.utils.safestring import mark_safe
 from django.db import models
 from django.forms import TextInput
 from  .models import Main_category,sub_cat,Subproduct_External_links1,KitComponent1,KitComponentSelected1,Product1, KitComponentSelected, KitComponent, SubProduct
 from .models import SubProduct
-from .models import kcentercategories, kcentertopic
+from .models import KCenter, KCenterTopic
 
 class Subproduct_External_links1Admin(admin.ModelAdmin):
 	list_display = ['meta_title']
@@ -117,17 +117,30 @@ class ATSInfoAdmin(admin.ModelAdmin):
       prepopulated_fields={'category_slug':('category_name', )}
 
 class KCenterTopicInline(admin.TabularInline):
-    model = kcentertopic
+    model = KCenterTopic
     extra = 1  # One extra blank row for topics
 
 class KCenterCategoriesAdmin(admin.ModelAdmin):
-    list_display = ['categories']
-    prepopulated_fields = {'categoriesslug': ('categories',)}
+    list_display = ['title', 'display_categories']  # Adjusted to display custom method
+    prepopulated_fields = {'slug': ('title',)}
+
+    def display_categories(self, obj):
+        # Returns a comma-separated list of category names
+        return ", ".join([category.name for category in obj.categories.all()])
+    display_categories.short_description = 'Categories'  # Display name in admin
+
     inlines = [KCenterTopicInline]  # Add KCenterTopicInline here
 
+
+
 class KCenterTopicAdmin(admin.ModelAdmin):
-    list_display = ['category', 'ktopic']
+    list_display = ['display_category', 'ktopic', 'ktopic_slug', 'ktopicintro']
     prepopulated_fields = {'ktopic_slug': ('ktopic',)}
+
+    def display_category(self, obj):
+        # Return the category name or 'No Category' if the topic has no category
+        return obj.category.name if obj.category else 'No Category'
+    display_category.short_description = 'Category'  # Disp
 
 class KitComponentInline(admin.TabularInline):
     model = KitComponent1
@@ -169,8 +182,8 @@ admin.site.register(ATSInfo, ATSInfoAdmin)
 admin.site.register(ATSContactInfo, ATSContactInfoAdmin)
 admin.site.register(ATSSeller, ATSSellerAdmin)
 admin.site.register(ATSRoadmap)
-admin.site.register(kcentercategories, KCenterCategoriesAdmin)
-admin.site.register(kcentertopic,KCenterTopicAdmin)
+admin.site.register(KCenter, KCenterCategoriesAdmin)
+admin.site.register(KCenterTopic, KCenterTopicAdmin)
 admin.site.register( ContactNumber, ContactNumberAdmin)
 admin.site.register(Newone,NewoneAdmin)
 admin.site.register(sess,sessAdmin)
