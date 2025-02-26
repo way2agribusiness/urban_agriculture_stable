@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comments,Newone ,KitComponentSelected1,Review, ATSSeller, ATSSellerProductImage, Contacts, kcentercategories, kcentertopic
+from .models import Comments,Newone ,KitComponentSelected1,Review, ATSSeller, ATSSellerProductImage, Contacts, KCenter, KCenterTopic
 from django.forms import inlineformset_factory
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
@@ -104,24 +104,10 @@ ATSSellerProductImageFormSet = inlineformset_factory(
     can_delete=True,
 )
 
-class CategoryForm(forms.ModelForm):
-    class Meta:
-        model = kcentercategories
-        fields = ['categories']
-        widgets = {
-            'categories':forms.Select(attrs={'labels':'Select Category'})
-        }
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args,**kwargs)
-        category_choices= [(slugify("Select Category"),"Select Category")]
-        category_choices += [(category.categories, category.categories) for category in kcentercategories.objects.all()]
-        if category_choices:
-            self.fields['categories'].widget.choices = category_choices
-            
+
 class TopicForm(forms.ModelForm):
     class Meta:
-        model = kcentertopic
+        model = KCenterTopic
         fields = ['ktopic']
         widgets = {
             'ktopic':forms.Select(attrs={'labels':'Select Topic'})

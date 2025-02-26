@@ -1,12 +1,12 @@
 from django.contrib import admin
 from .models import ContactNumber, Newone,sess,Banner, Highlights, Home_Information, Blogs, Logo, ATSInfo, ATSContactInfo,ATSContactProductInfo,ATSContactProductImages,ATSIntro,ATSSeller, ATSSellerProductImage, ATSRoadmap
-from .models import Brands,Product1, SeoPageExtLinks,Credentials,Comments,Contacts, Review, kcentertopic
+from .models import Brands,Product1, SeoPageExtLinks,Credentials,Comments,Contacts, Review, KCenterTopic
 from django.utils.safestring import mark_safe
 from django.db import models
 from django.forms import TextInput
 from  .models import Main_category,sub_cat,Subproduct_External_links1,KitComponent1,KitComponentSelected1,Product1, KitComponentSelected, KitComponent, SubProduct
 from .models import SubProduct
-from .models import kcentercategories, kcentertopic
+from .models import KCenter, KCenterTopic
 
 class Subproduct_External_links1Admin(admin.ModelAdmin):
 	list_display = ['meta_title']
@@ -116,18 +116,14 @@ class ATSInfoAdmin(admin.ModelAdmin):
       list_display = ['category_name']
       prepopulated_fields={'category_slug':('category_name', )}
 
-class KCenterTopicInline(admin.TabularInline):
-    model = kcentertopic
-    extra = 1  # One extra blank row for topics
-
-class KCenterCategoriesAdmin(admin.ModelAdmin):
-    list_display = ['categories']
-    prepopulated_fields = {'categoriesslug': ('categories',)}
-    inlines = [KCenterTopicInline]  # Add KCenterTopicInline here
 
 class KCenterTopicAdmin(admin.ModelAdmin):
-    list_display = ['category', 'ktopic']
-    prepopulated_fields = {'ktopic_slug': ('ktopic',)}
+	list_display = ['ktopic']
+	prepopulated_fields = {'ktopic_slug':('ktopic',)}
+	def get_form(self, request, obj=None, **kwargs):
+		form = super().get_form(request, obj, **kwargs)
+		form.base_fields['text8'].label = 'URL '
+		return form
 
 class KitComponentInline(admin.TabularInline):
     model = KitComponent1
@@ -155,7 +151,6 @@ admin.site.register(Logo)
 admin.site.register(Banner)
 admin.site.register(Home_Information)
 admin.site.register(Highlights)
-
 admin.site.register(Blogs,BlogAdmin)
 admin.site.register(Brands)
 admin.site.register(SeoPageExtLinks)
@@ -163,14 +158,13 @@ admin.site.register(Credentials,CredentialAdmin)
 admin.site.register(Comments,CommentAdmin)
 admin.site.register(Contacts,ContactAdmin)
 admin.site.register(Review, ReviewAdmin)
-
 admin.site.register(ATSIntro)
 admin.site.register(ATSInfo, ATSInfoAdmin)
 admin.site.register(ATSContactInfo, ATSContactInfoAdmin)
 admin.site.register(ATSSeller, ATSSellerAdmin)
 admin.site.register(ATSRoadmap)
-admin.site.register(kcentercategories, KCenterCategoriesAdmin)
-admin.site.register(kcentertopic,KCenterTopicAdmin)
+admin.site.register(KCenter)
+admin.site.register(KCenterTopic,KCenterTopicAdmin)
 admin.site.register( ContactNumber, ContactNumberAdmin)
 admin.site.register(Newone,NewoneAdmin)
 admin.site.register(sess,sessAdmin)

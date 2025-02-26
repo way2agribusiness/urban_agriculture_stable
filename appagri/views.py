@@ -6,14 +6,16 @@ from django.views.generic import ListView,DetailView
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect ,HttpResponse
 from .models import Main_category,sub_cat,Product1,sess,Newone,ContactNumber,Home_Information ,Highlights, Banner, Blogs, Logo, Brands, ReviewResponse
-from .models import SeoPageExtLinks,Comments,Contacts,Credentials,Product, Review, ATSInfo, ATSContactInfo, ATSIntro, ATSContactProductInfo, ATSContactProductImages, ATSSeller, ATSSellerProductImage, ATSRoadmap,FeaturedListing, kcentertopic
+from .models import SeoPageExtLinks,Comments,Contacts,Credentials,Product, Review, ATSInfo, ATSContactInfo, ATSIntro, ATSContactProductInfo, ATSContactProductImages, ATSSeller, ATSSellerProductImage, ATSRoadmap,FeaturedListing, KCenterTopic
 from django.shortcuts import render, get_object_or_404
-from .forms import Newform, CommentForm, ReviewForm, KitComponentSelectedForm, ATSSellerForm,ATSSellerProductImageFormSet, ContactForm, CategoryForm,TopicForm
+from .forms import Newform, CommentForm, ReviewForm, KitComponentSelectedForm, ATSSellerForm,ATSSellerProductImageFormSet, ContactForm,TopicForm
 from django.urls import reverse,path
 from itertools import groupby
 from django.db.models import Count, Avg
 import math
 import json
+from appagri.models import KCenter  # Adjust as needed
+from .models import KCenter
 from django.http import JsonResponse
 from django.views.generic import DetailView
 import phonenumbers
@@ -553,84 +555,8 @@ def BacklinksView(request):
 	unique_links = [list(set(sublist)) for sublist in links_list]
 	return render(request, 'backlinks.html',{'links_list':unique_links})
 
-def kcenter_categories(request):
-    seo = SeoPageExtLinks.objects.all()
-    title=''
-    desc=''
-    key=''
-    for i in seo:
-        if i.page == 'kcenter':
-            title = i.meta_title
-            desc = i.meta_description
-            key = i.keywords
-    logo = Logo.objects.all()
-    url = request.build_absolute_uri(request.path)
-    if request.method == 'POST':
-        form = CategoryForm(request.POST) 
-        if form.is_valid():
-            selected_category = form.cleaned_data['categories']
-            return redirect(reverse('appagri:kcenter-category', args=[slugify(selected_category)]))
-    else:
-        form = CategoryForm()
-    return render(request, 'kcenter.html', {'form': form,'logo':logo,'canonical':url,'title':title,'desc':desc,'key':key})
 
-def kcenter_selected_categories(request, category_slug):
-    seo = SeoPageExtLinks.objects.all()
-    title=''
-    desc=''
-    key=''
-    for i in seo:
-        if i.page == 'kcenter':
-            title = i.meta_title
-            desc = i.meta_description
-            key = i.keywords
-    logo = Logo.objects.all()
-    url = request.build_absolute_uri(request.path)
-    if request.method=='POST':
-        if 'categories' in request.POST:
-            form = CategoryForm(request.POST) 
-            if form.is_valid():
-                selected_category=form.cleaned_data['categories']
-                return redirect(reverse('appagri:kcenter-category', args=[slugify(selected_category)]))
-        elif 'ktopic' in request.POST:
-            form1 = TopicForm(request,request.POST)
-            if form1.is_valid():
-                selected_topic=form1.cleaned_data['ktopic']
-                return redirect(reverse('appagri:kcenter-topic', args=[category_slug, slugify(selected_topic)]))
-    else:
-        form=TopicForm(request)
-        form1 = CategoryForm()
-    return render(request, 'kcenter-topic.html', {'category_slug':category_slug,'form':form, 'form1':form1,'logo':logo,'canonical':url,'title':title,'desc':desc,'key':key})
 
-def kcenter_selected_topic(request, category_slug, topic_slug):
-    seo = SeoPageExtLinks.objects.all()
-    title=''
-    desc=''
-    key=''
-    for i in seo:
-        if i.page == 'kcenter':
-            title = i.meta_title
-            desc = i.meta_description
-            key = i.keywords
-    logo = Logo.objects.all()
-    url = request.build_absolute_uri(request.path)
-    if request.method=='POST':
-        if 'categories' in request.POST:
-            form = CategoryForm(request.POST) 
-            if form.is_valid():
-                selected_category=form.cleaned_data['categories']
-                return redirect(reverse('appagri:kcenter-category', args=[slugify(selected_category)]))
-        elif 'ktopic' in request.POST:
-            form1 = TopicForm(request,request.POST)
-            if form1.is_valid():
-                selected_topic=form1.cleaned_data['ktopic']
-                return redirect(reverse('appagri:kcenter-topic', args=[category_slug, slugify(selected_topic)]))
-    else:
-        form=TopicForm(request)
-        form1 = CategoryForm()
-    selected_topic = kcentertopic.objects.get(ktopic_slug=topic_slug)
-    topic_contents = selected_topic.ktopictext.split('.')
-    return render(request, 'kcenter-selected-topic-content.html', {'category_slug':category_slug,'form':form,'topic_slug':topic_slug,'selected_topic':selected_topic,'form1':form1,'logo':logo,'canonical':url,'title':title,'desc':desc,'key':key,'topic_contents':topic_contents})
 
 def ats_view(request):
 	logo = Logo.objects.all()
@@ -807,6 +733,22 @@ def delete(request,id):
 	item = get_object_or_404(Newone,id=id)
 	item.delete()
 	return redirect('appagri:list')
+def kcenter_view(request):
+	seo = SeoPageExtLinks.objects.all()
+	title=''
+	desc=''
+	key=''
+	for i in seo:
+		if i.page == 'kcenter':
+			title = i.meta_title
+			desc = i.meta_description
+			key = i.keywords
+	logo = Logo.objects.all()
+	contents = KCenter.objects.all()
+	url = request.build_absolute_uri(request.path)
+	items = KCenterTopic.objects.all()
+	return render(request,'kcenter.html',{'items':items,'logo':logo,'contents':contents,'canonical': url, 'title':title,'desc':desc,'key':key})
+
 
 def front(request):
 	if request.method == "POST":
