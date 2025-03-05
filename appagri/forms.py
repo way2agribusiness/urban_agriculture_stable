@@ -1,11 +1,16 @@
 from django import forms
+<<<<<<< HEAD
 from .models import Comments,Newone ,KitComponentSelected1,Review, ATSSeller, ATSSellerProductImage, Contacts, KCenter, KCenterTopic
+=======
+from .models import Comments,Newone ,KitComponentSelected1,Review, ATSSeller, ATSSellerProductImage, Contacts,KCenter,KCenterTopic
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
 from django.forms import inlineformset_factory
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
-                                                                                            
+from .models import KCenter, Category
 
+                                                                                            
 class ContactForm(forms.ModelForm):
 	class Meta:
 		model=Contacts
@@ -104,7 +109,28 @@ ATSSellerProductImageFormSet = inlineformset_factory(
     can_delete=True,
 )
 
+<<<<<<< HEAD
 
+=======
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = KCenter
+        fields = ['categories']
+        widgets = {
+            'categories': forms.Select(attrs={'label': 'Select Category'})
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        category_choices = [(slugify("Select Category"), "Select Category")]
+
+        # Accessing the related Category model through KCenter and adding choices to the form
+        category_choices += [(category.id, category.name) for category in Category.objects.all()]
+
+        if category_choices:
+            self.fields['categories'].widget.choices = category_choices
+            
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
 class TopicForm(forms.ModelForm):
     class Meta:
         model = KCenterTopic

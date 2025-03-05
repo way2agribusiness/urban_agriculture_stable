@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 
 
+
 class ContactNumber(models.Model):
 	phone_number = models.CharField(max_length=20)
 	Time= models.DateTimeField(null=True)
@@ -131,8 +132,18 @@ class Blogs(models.Model):
 		verbose_name = 'Post Blogs'
 		verbose_name_plural = 'Post Blogs'
 
+<<<<<<< HEAD
 class KCenter(models.Model):
     title = models.CharField(max_length=500, null=True)
+=======
+from django.db import models
+from cloudinary.models import CloudinaryField
+
+# Your KCenter model
+class KCenter(models.Model):
+    title = models.CharField(max_length=500, null=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
     image = CloudinaryField(null=True, blank=True)
     alt = models.CharField(max_length=500, default='', blank=True)
     text1 = models.CharField(max_length=1000, null=True, blank=True)
@@ -146,14 +157,35 @@ class KCenter(models.Model):
     text9 = models.CharField(max_length=1000, null=True, blank=True)
     text10 = models.CharField(max_length=1000, null=True, blank=True)
 
+<<<<<<< HEAD
+=======
+    # String reference to 'Category' to avoid circular import
+    categories = models.ManyToManyField('Category', blank=True)
+
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
     def __str__(self):
         return self.title
 
     class Meta:
         verbose_name = 'Enter KCenter Details'
         verbose_name_plural = 'Enter KCenter Details'
+<<<<<<< HEAD
     
 class KCenterTopic(models.Model):  # Renamed to follow proper naming convention
+=======
+
+
+# Your Category model (this should already be defined in the same file or a separate one)
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class KCenterTopic(models.Model):
+    kcenter = models.ForeignKey('KCenter', related_name='topics', on_delete=models.CASCADE, null=True)
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
     ktopic = models.CharField(max_length=200)
     ktopic_slug = models.SlugField(unique=True, blank=True, null=True)
     ktopicimg = CloudinaryField()
@@ -168,13 +200,24 @@ class KCenterTopic(models.Model):  # Renamed to follow proper naming convention
     text7 = models.CharField(max_length=1000, null=True, blank=True)
     text8 = models.CharField(max_length=1000, null=True, blank=True)
     ktopicconclusion = models.CharField(max_length=1000)
+<<<<<<< HEAD
 
     def __str__(self):
         return f'{self.ktopic}'
 
+=======
+    
+    # ForeignKey to Category model
+    category = models.ForeignKey('Category', related_name='topics', on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.ktopic}'
+    
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
     class Meta:
         verbose_name = 'Enter KCenter Category-Specific Topic'
         verbose_name_plural = 'Enter KCenter Category-Specific Topic'
+
 
 class Product(models.Model):
 	CHOICES = (('Terrace Gardening','Terrace Gardening'),('Irrigation Solutions', 'Irrigation Solutions'))

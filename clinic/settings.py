@@ -12,7 +12,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = "/media/"
 SECRET_KEY = 'django-insecure-qda2g=njwc1ern=9amy!4=2v_iea3c$w%j41+-p(ili%a62yml'
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.urbanagriculture.in', 'urbanagriculture.in']
+ALLOWED_HOSTS = ['165.232.181.109','127.0.0.1', 'localhost', 'www.urbanagriculture.in', 'urbanagriculture.in']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 INSTALLED_APPS = [
@@ -42,7 +42,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+<<<<<<< HEAD
     'allauth.account.middleware.AccountMiddleware',
+=======
+    'allauth.account.middleware.AccountMiddleware'
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
 ]
 ROOT_URLCONF = 'clinic.urls'
 TEMPLATES = [
@@ -69,8 +73,13 @@ WSGI_APPLICATION = 'clinic.wsgi.application'
 
 DATABASES = {
     'default': {
+<<<<<<< HEAD
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+=======
+        'ENGINE': 'django.db.backends.sqlite3',  # Use SQLite backend
+        'NAME': BASE_DIR / 'db.sqlite3',  # This will create a file named db.sqlite3 in the project root directory
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
     }
 }
 

@@ -116,14 +116,43 @@ class ATSInfoAdmin(admin.ModelAdmin):
       list_display = ['category_name']
       prepopulated_fields={'category_slug':('category_name', )}
 
+<<<<<<< HEAD
+=======
+class KCenterTopicInline(admin.TabularInline):
+    model = KCenterTopic
+    extra = 1  # One extra blank row for topics
+
+class KCenterCategoriesAdmin(admin.ModelAdmin):
+    list_display = ['title', 'display_categories']  # Adjusted to display custom method
+    prepopulated_fields = {'slug': ('title',)}
+
+    def display_categories(self, obj):
+        # Returns a comma-separated list of category names
+        return ", ".join([category.name for category in obj.categories.all()])
+    display_categories.short_description = 'Categories'  # Display name in admin
+
+    inlines = [KCenterTopicInline]  # Add KCenterTopicInline here
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
+
+
 
 class KCenterTopicAdmin(admin.ModelAdmin):
+<<<<<<< HEAD
 	list_display = ['ktopic']
 	prepopulated_fields = {'ktopic_slug':('ktopic',)}
 	def get_form(self, request, obj=None, **kwargs):
 		form = super().get_form(request, obj, **kwargs)
 		form.base_fields['text8'].label = 'URL '
 		return form
+=======
+    list_display = ['display_category', 'ktopic', 'ktopic_slug', 'ktopicintro']
+    prepopulated_fields = {'ktopic_slug': ('ktopic',)}
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
+
+    def display_category(self, obj):
+        # Return the category name or 'No Category' if the topic has no category
+        return obj.category.name if obj.category else 'No Category'
+    display_category.short_description = 'Category'  # Disp
 
 class KitComponentInline(admin.TabularInline):
     model = KitComponent1
@@ -163,8 +192,13 @@ admin.site.register(ATSInfo, ATSInfoAdmin)
 admin.site.register(ATSContactInfo, ATSContactInfoAdmin)
 admin.site.register(ATSSeller, ATSSellerAdmin)
 admin.site.register(ATSRoadmap)
+<<<<<<< HEAD
 admin.site.register(KCenter)
 admin.site.register(KCenterTopic,KCenterTopicAdmin)
+=======
+admin.site.register(KCenter, KCenterCategoriesAdmin)
+admin.site.register(KCenterTopic, KCenterTopicAdmin)
+>>>>>>> b9bfab8f9813eea85cd6343d5741d8ecdfb05206
 admin.site.register( ContactNumber, ContactNumberAdmin)
 admin.site.register(Newone,NewoneAdmin)
 admin.site.register(sess,sessAdmin)
